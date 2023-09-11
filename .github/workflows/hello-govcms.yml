@@ -1,0 +1,28 @@
+name: Hello GovCMS
+run-name: ${{ github.actor }} is testing out GovCMS distribution 🚀
+on:
+  push:
+    branches: [ 3.x-develop ]
+  pull_request:
+    branches: [ 3.x-develop ]
+
+jobs:
+  build:
+    runs-on: govcms/govcms:10.x-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Status report of software versions and variables
+        run: |
+          php -v
+          composer --version
+          drush version
+          npm -v
+      - name: Conducting testing for the Composer build
+        run: |
+         composer validate
+         composer update --profile --prefer-dist --optimize-autoloader
+         composer outdated -D
+      - name: Conducting testing for the Cypress build
+        run: |
+          cd cy && npm install
+          npm audit || true
