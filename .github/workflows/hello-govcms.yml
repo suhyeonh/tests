@@ -8,14 +8,17 @@ on:
 
 jobs:
   build:
-    runs-on: govcms/govcms:10.x-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Status report of software versions and variables
         run: |
           php -v
           composer --version
-          drush version
           npm -v
       - name: Conducting testing for the Composer build
         run: |
