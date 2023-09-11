@@ -1,5 +1,5 @@
-name: Hello GovCMS
-run-name: ${{ github.actor }} is testing out GovCMS distribution 🚀
+name: Build Verification Test
+run-name: Build Verification Test by ${{ github.actor }} 🚀
 on:
   push:
     branches: [ 3.x-develop ]
