@@ -23,7 +23,6 @@ jobs:
       - name: Conducting testing for the Composer build
         run: |
          composer validate
-         composer update --profile --prefer-dist --optimize-autoloader
          composer outdated -D
       - name: Conducting testing for the Cypress build
         run: |
