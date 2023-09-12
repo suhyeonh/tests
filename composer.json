@@ -25,6 +25,11 @@
         "sort-packages": true,
         "optimize-autoloader": true
     },
+    "extra": {
+        "branch-alias": {
+            "dev-3.x-develop": "3.x-dev"
+        }
+    },
     "scripts": {
         "nuke": "rm -r -f composer.lock bin vendor"
     },
