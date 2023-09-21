@@ -14,55 +14,6 @@ CI is a crucial part of modern software development that allows you to automatic
 - Integration with popular CI services like Travis CI and CircleCI.
 - Easy setup with provided configuration files.
 
-## Getting Started
-
-Follow these steps to set up CI for your GovCMS distribution:
-
-### Prerequisites
-
-1. Make sure you have a GovCMS distribution repository on GitHub.
-
-### Configuration
-
-1. Clone this repository to your local machine:
-
-   ```bash
-   git clone https://github.com/yourusername/govcms-ci-testing.git
-   ```
-
-2. Copy the CI configuration files from this repository to your GovCMS distribution repository. You can copy them manually or use a script to automate the process.
-
-   ```bash
-   cp -r govcms-ci-testing/.github your-govcms-repo/
-   ```
-
-3. Commit and push the changes to your GovCMS distribution repository:
-
-   ```bash
-   cd your-govcms-repo/
-   git add .github
-   git commit -m "Add CI configuration files"
-   git push origin main
-   ```
-
-### CI Service Setup
-
-#### Travis CI
-
-1. Go to [Travis CI](https://travis-ci.com/) and sign in with your GitHub account.
-
-2. Enable the CI pipeline for your GovCMS distribution repository.
-
-3. Travis CI will automatically detect the `.travis.yml` file in your repository and start running the CI pipeline.
-
-#### CircleCI
-
-1. Go to [CircleCI](https://circleci.com/) and sign in with your GitHub account.
-
-2. Add your GovCMS distribution repository to CircleCI.
-
-3. CircleCI will automatically detect the `.circleci` directory and start running the CI pipeline.
-
 ## Usage
 
 With CI set up, every time you push changes to your GovCMS distribution repository, the CI pipeline will:
@@ -88,6 +39,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-If you have any questions or need assistance with this project, please contact [your@email.com].
+If you have any questions or need assistance with this project, please contact us.
 
 Happy testing! 🚀
