@@ -1,4 +1,6 @@
-# Testing the GovCMS Distribution with Continuous Integration (CI)
+# govcms-tests
+
+Testing the GovCMS Distribution with Continuous Integration (CI)
 
 ## Overview
 
