@@ -1,17 +1,21 @@
 version: 2
 updates:
   - package-ecosystem: composer
-    directory: "/"
+    directory: /
     schedule:
       interval: daily
-      time: "07:00"
-      timezone: "Australia/Sydney"
+      time: '07:00'
+      timezone: Australia/Sydney
     open-pull-requests-limit: 15
     target-branch: 3.x-develop
     reviewers:
-    - pandaskii
- - package-ecosystem: npm
-    directory: "/cy"
+      - pandaskii
+  - package-ecosystem: npm
+    directory: /cy
     schedule:
       interval: daily
+      time: '07:00'
+      timezone: Australia/Sydney
     target-branch: 3.x-develop
+    reviewers:
+      - pandaskii
