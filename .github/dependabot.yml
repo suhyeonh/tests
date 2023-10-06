@@ -11,7 +11,7 @@ updates:
     reviewers:
     - pandaskii
  - package-ecosystem: npm
-    directory: "/"
+    directory: "/cy"
     schedule:
       interval: daily
     target-branch: 3.x-develop
