@@ -7,8 +7,8 @@ WORKDIR /tests/
 # Copy the project's "composer.json" file into the container
 COPY ./composer.json .
 
-# Update PHP dependencies using Composer
-RUN composer update
+# Update PHP dependencies using Composer, utilizing a cache for better performance
+RUN --mount=type=cache,mode=0777,target=/root/.composer/cache composer update
 
 # Change the working directory to "/tests/cy"
 COPY phpcs.xml .
