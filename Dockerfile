@@ -1,27 +1,26 @@
 # Stage 1: Build stage
 FROM govcmstesting/php:8.1-cli as builder
 
-# Set the working directory to "/tests/"
-WORKDIR /tests/
+# Set the working directory
+WORKDIR /tests
 
-# Copy the project's "composer.json" file into the container
-COPY ./composer.json .
+# Copy only the necessary files for dependency installation
+COPY composer.json composer.lock ./
 
-# Update PHP dependencies using Composer, utilizing a cache for better performance
-RUN --mount=type=cache,mode=0777,target=/root/.composer/cache composer update
+# Install PHP dependencies using Composer
+RUN --mount=type=cache,mode=0777,target=/root/.composer/cache composer install --no-scripts --no-autoloader
 
-# Change the working directory to "/tests/cy"
-COPY phpcs.xml .
-COPY phpcs.govcms.xml .
+# Copy the rest of the application files
+COPY . .
 
-# Copy the contents of the local "cy" directory into the container's working directory
-COPY ./cy ./cy
+# Install Composer dependencies, generate autoloader, and run other build tasks
+RUN composer install --no-dev --optimize-autoloader
 
 # Stage 2: Final stage
 FROM alpine:3
 
-# Copy the build artifacts from the "builder" stage into the final image
-COPY --from=builder /tests /tests
-
-# Set the working directory to "/tests/"
 WORKDIR /tests/
+
+COPY --from=builder /tests .
+
+# The final image contains the build artifacts

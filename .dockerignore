@@ -1,6 +1,7 @@
 .docker
 .dockerignore
 .git
+.gitignore
 .github
 *.md
 docs
