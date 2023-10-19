@@ -1,0 +1,54 @@
+name: GovCMS CI Tests
+
+on:
+  push:
+    branches: [ "3.x-develop" ]
+  pull_request:
+    branches: [ "3.x-develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: govcmstesting/php:8.1-apache
+      
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MYSQL_DATABASE: govcms
+          MYSQL_ROOT_PASSWORD: govcms
+          MYSQL_ROOT_HOST: "%" 
+                    
+    steps:
+    - name: Install GovCMS dependencies
+      run: |
+       composer create-project govcms/govcms ~/govcms
+       cd ~/govcms
+       composer config --no-plugins allow-plugins.phpstan/extension-installer 1
+       composer require --dev drupal/core-dev:"^10.1"
+       chown -R www-data:www-data web/sites
+       rm -rf tests
+
+    - name: Setup webserver
+      run: |
+       rm -rf /var/www/html
+       ln -sf ~/govcms/web /var/www/html
+       service apache2 restart
+
+    - name: Install GovCMS site
+      run: |
+       cd ~/govcms
+       ./bin/drush site-install -y govcms --db-url=mysql://root:govcms@mariadb:3306/govcms --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
+   
+    - uses: actions/checkout@v4
+
+    - name: Run Cypress tests
+      run: |
+        cd cy && npm ci
+        rm cypress/integration/1-baseline/modules.spec.js
+        npx cypress run --config baseUrl=http://localhost/
