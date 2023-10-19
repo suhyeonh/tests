@@ -1,1 +1,10 @@
-vendor
+# Composer vendor
+vendor/
+
+# Node
+node_modules/
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
