@@ -6,6 +6,7 @@ WORKDIR /app/
 
 # Copy core files and configuration from the "govcms/govcms" image
 COPY --from=govcms/govcms:10.x-edge /app /app
+COPY --from=drupal:10.1-php8.1-apache /opt/drupal/web/core/install.php /app/web/core/install.php
 
 # Copy test-related files from the "govcmstesting/tests" image into "/app/tests"
 COPY --from=govcmstesting/tests /tests /app/tests
@@ -18,8 +19,15 @@ COPY --from=base /app /app
 
 # Customize Drupal installation
 RUN set -eux; \
+    rm -rf /var/www/html; \
+    ln -sf /app/web /var/www/html; \
     mkdir -p /app/config/default; \
     chown -R www-data:www-data /app/web/sites;
+
+# Set environment variables
+ENV PATH=${PATH}:/app/tests/vendor/bin:/app/vendor/bin
+ENV SIMPLETEST_BASE_URL="http://localhost"
+ENV SIMPLETEST_DB='mysql://drupal:drupal@mariadb/drupal'
 
 # Set the working directory to "/app/"
 WORKDIR /app/

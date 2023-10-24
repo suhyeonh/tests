@@ -1,3 +1,6 @@
+# Local development
+app/
+
 # Composer vendor
 vendor/
 

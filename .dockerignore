@@ -4,6 +4,9 @@
 .gitignore
 .github
 *.md
+app
 docs
+docker-compose.yml
 Dockerfile
 LICENSE
+vendor
