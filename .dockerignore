@@ -8,5 +8,6 @@ app
 docs
 docker-compose.yml
 Dockerfile
+Tiltfile
 LICENSE
 vendor
