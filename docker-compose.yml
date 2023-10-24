@@ -1,0 +1,33 @@
+services:
+  ##########################################
+  # govcms: The GovCMS local development
+  ##########################################
+  govcms:
+    build:
+      context: .
+      dockerfile: $PWD/.docker/Dockerfile.govcms
+    ports:
+      - "8888:80"
+    volumes:     
+      - .:/app/tests
+      - $PWD/app/modules:/app/web/modules/develop
+      - $PWD/app/themes:/app/web/themes/develop
+      - /var/www/html/sites
+      - ~/.composer:/root/.composer 
+
+  ##########################################
+  # mariadb: The database used by local
+  ##########################################
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: drupal
+      MARIADB_USER: drupal
+      MARIADB_PASSWORD: drupal
+    volumes:
+      - $PWD/app/database:/var/lib/mysql
+
+networks:
+  default:
+    external: false
