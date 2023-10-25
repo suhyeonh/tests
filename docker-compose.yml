@@ -15,7 +15,9 @@ services:
       - $PWD/app/modules:/app/web/modules/develop
       - $PWD/app/themes:/app/web/themes/develop
       - /var/www/html/sites
-      - .:/app/tests
+      - $PWD/behat:/app/tests/behat
+      - $PWD/cy:/app/tests/cy
+      - $PWD/phpunit:/app/tests/phpunit
 
   ##########################################
   # mariadb: The database used by local
