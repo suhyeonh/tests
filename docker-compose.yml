@@ -1,14 +1,5 @@
 services:
   ##########################################
-  # tests: The GovCMS local tests
-  ##########################################
-  tests:
-     build:
-      context: .
-      dockerfile: $PWD/Dockerfile
-     image: govcmstesting/tests
-
-  ##########################################
   # govcms: The GovCMS local development
   ##########################################
   govcms:
@@ -17,7 +8,6 @@ services:
       dockerfile: $PWD/.docker/Dockerfile.govcms
     image: govcmstesting/govcms
     depends_on:
-      - tests
       - mariadb
     ports:
       - "8888:80"
@@ -25,6 +15,7 @@ services:
       - $PWD/app/modules:/app/web/modules/develop
       - $PWD/app/themes:/app/web/themes/develop
       - /var/www/html/sites
+      - .:/app/tests
 
   ##########################################
   # mariadb: The database used by local

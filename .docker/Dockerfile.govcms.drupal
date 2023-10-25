@@ -1,5 +1,5 @@
 # Stage 1: Base image
-FROM alpine:3 as base
+FROM govcmstesting/tests as base
 
 # Set the working directory to "/app/"
 WORKDIR /app/
@@ -7,14 +7,14 @@ WORKDIR /app/
 # Copy core files and configuration from the "govcms/govcms" image
 COPY --from=govcms/govcms:10.x-edge /app /app
 
-# Copy test-related files from the "govcmstesting/tests" image into "/app/tests"
-COPY --from=govcmstesting/tests /tests /app/tests
-
 # Stage 2: Final image
 FROM drupal:10.1-php8.1-apache
 
 # Copy contents from the "base" stage to "/app/"
 COPY --from=base /app /app
+
+# Copy test-related files from the  "base" stage to "/app/tests"
+COPY --from=base /tests /app/tests
 
 # Customize Drupal installation
 RUN set -eux; \
