@@ -1,5 +1,5 @@
 # Stage 1: Base image
-FROM govcmstesting/tests as base
+FROM govcmstesting/tests:3.x-latest as base
 
 # Set the working directory to "/app/"
 WORKDIR /app/
