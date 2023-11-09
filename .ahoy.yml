@@ -24,6 +24,10 @@ commands:
     usage: Stop Docker containers.
     cmd: docker compose stop "$@"
 
+  watch:
+    usage: Use Compose Watch for live development.
+    cmd: docker compose watch
+
   cli:
     usage: Start a shell.
     cmd: docker compose exec govcms bash

@@ -1,11 +1,7 @@
 # Stage 1: Base image
-FROM govcmstesting/tests:3.x-latest as base
-
-# Set the working directory to "/app/"
-WORKDIR /app/
+FROM govcms/govcms:10.x-latest as base
 
 # Copy core files and configuration from the "govcms/govcms" image
-COPY --from=govcms/govcms:10.x-edge /app /app
 COPY --from=drupal:10.1-php8.1-apache /opt/drupal/web/core/install.php /app/web/core/install.php
 
 # Stage 2: Final image
@@ -15,7 +11,7 @@ FROM govcmstesting/php:8.1-apache
 COPY --from=base /app /app
 
 # Copy test-related files from the  "base" stage to "/app/tests"
-COPY --from=base /tests /app/tests
+COPY --from=govcms.ops/tests /tests /app/tests
 
 # Customize Drupal installation
 RUN set -eux; \
