@@ -82,6 +82,7 @@ with global superadmin already created. We then need to configure two things:
 - local url
 - Superadmin details.
 - Drush location
+- Composer location
 
 *Local URL*
 
@@ -117,6 +118,13 @@ necessary to execute Drush locally. In the case of Docker Compose, we set:
 }
 ```
 where `govcms` is the docker container name.
+
+*Composer location*
+
+Similar to Drush, you need to tell Cypress where to find Composer. This can be configured by setting `composerCmdLine`, for example:
+```json
+"composerCmdLine": "cd ..; composer %command"
+```
 
 You are now set up and ready to run tests!
 
