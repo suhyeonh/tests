@@ -26,6 +26,26 @@ Cypress.Commands.add("execDrush", (command) => {
     return cy.exec(execCmd);
 });
 
+// Drupal drush command (previous).
+Cypress.Commands.add("drupalDrushCommand", (command) => {
+  var cmd = Cypress.env('drupalDrushCmdLine');
+
+  if (cmd == null) {
+    if (Cypress.env('localEnv') === "lando") {
+      cmd = 'lando drush %command'
+    } else {
+      cmd = 'drush %command'
+    }
+  }
+
+  if (typeof command === 'string') {
+    command = [command];
+  }
+
+  const execCmd = cmd.replace('%command', command.join(' '));
+
+  return cy.exec(execCmd);
+});
 
 // Composer command.
 Cypress.Commands.add("composerCommand", (command) => {
