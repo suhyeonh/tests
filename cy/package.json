@@ -3,14 +3,19 @@
   "description": "Integrate Cypress for testing the GovCMS distribution",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "https://github.com/govcms-tests/tests",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govcms-tests/tests.git"
+  },
   "author": "Joseph Zhao <pandaski@outlook.com.au>",
   "dependencies": {
-    "cypress": "^13.5.0",
-    "cypress-file-upload": "^5.0.7"
+    "cypress": "^13.6.2",
+    "cypress-file-upload": "^5.0.7",
+    "cypress-xpath": "^2.0.1"
   },
   "devDependencies": {
     "@cypress/eslint-plugin-json": "^3.2.3",
+    "cypress-otp": "^1.0.3",
     "eslint": "^8.53.0",
     "eslint-plugin-chai-friendly": "^0.7.1",
     "eslint-plugin-cypress": "^2.11.3",
@@ -39,5 +44,11 @@
       "yarn eslint --fix",
       "git add"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/govcms-tests/tests/issues"
+  },
+  "homepage": "https://github.com/govcms-tests/tests#readme",
+  "main": "cypress.config.js",
+  "keywords": []
 }

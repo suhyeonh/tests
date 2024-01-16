@@ -29,7 +29,11 @@ module.exports = defineConfig({
   },
   video: false,
   e2e: {
-    setupNodeEvents(on, config) {},
-    baseUrl: 'http://local.govcms.gov.au',
+    setupNodeEvents(on, config) {
+      return require('./cypress/plugins/index.js')(on, config)
+    },
+    baseUrl: 'http://localhost:8888',
+    experimentalRunAllSpecs: true
   },
+  watchForFileChanges: false
 })
