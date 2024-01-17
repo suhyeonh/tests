@@ -126,8 +126,16 @@ Cypress.Commands.add("userLogin", (siteRole) => {
 Cypress.Commands.add("type_ckeditor", (element, content) => {
     cy.window()
         .then(win => {
-            win.CKEDITOR.instances[element].setData(content);
+          win.CKEDITOR.instances[element].setData(content);
         });
 })
+
+Cypress.Commands.add("confirm", () => {
+  cy.get('#edit-submit').click()
+})
+
+export function randString(length) {
+  return (Math.random() + 1).toString(36).substring(length)
+}
 
 

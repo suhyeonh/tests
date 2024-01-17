@@ -2,6 +2,8 @@
 
 // Drupal login.
 Cypress.Commands.add("drupalLogin", (user, password) => {
+  cy.visit('user/logout')
+
   user = user || Cypress.env('user').super.username
   password = password || Cypress.env('user').super.password
 

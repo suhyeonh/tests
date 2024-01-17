@@ -5,9 +5,6 @@ const testUsername = 'avril'
 
 
 describe('Check TFA setup', () => {
-    // beforeEach(() => {
-    //     cy.drupalLogin()
-    // })
 
     it('Create encryption key', () => {
         cy.drupalLogin()
