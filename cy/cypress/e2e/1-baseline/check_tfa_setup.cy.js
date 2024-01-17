@@ -1,7 +1,9 @@
 // Test setup TFA module.
-const testKey = 'testkey123'
-const testProfile = 'testprofile123'
-const testUsername = 'avril'
+import {randString} from "../../support/commands";
+
+const testKey = randString(10);
+const testProfile = randString(10);
+const testUsername = randString(10);
 
 
 describe('Check TFA setup', () => {
@@ -37,6 +39,21 @@ describe('Check TFA setup', () => {
         cy.get('.messages-list__item').contains(`Saved the ${testProfile} encryption profile.`)
     })
 
+    it('Check user is not asked to set up TFA', () => {
+        cy.visit('user/logout')
+        cy.execDrush(`user:create ${testUsername} --password=password`)
+        cy.execDrush(`user:role:add govcms_content_author ${testUsername}`)
+        cy.execDrush(`user:role:remove authenticated ${testUsername}`)
+        cy.execDrush('role:perm:add govcms_content_author \'setup own tfa\'')
+        // Log in as the new user.
+        cy.visit('user')
+        cy.get("#edit-name").type(`${testUsername}`)
+        cy.get("#edit-pass").type('password')
+        cy.get("#edit-submit").click()
+        // Check message is not there
+        cy.get('.messages.messages--error').should('not.exist')
+    })
+
     it('Set up TFA', () =>{
         cy.execDrush('-y cset tfa.settings enabled 1')
         cy.execDrush('-y cset tfa.settings validation_skip 10')
@@ -50,9 +67,6 @@ describe('Check TFA setup', () => {
 
     it('Check new user is asked to enable TFA', () => {
         cy.visit('user/logout')
-        cy.execDrush(`user:create ${testUsername} --password=password`)
-        cy.execDrush(`user:role:add govcms_content_author ${testUsername}`)
-        cy.execDrush('role:perm:add govcms_content_author \'setup own tfa\'')
         // Log in as the new user.
         cy.visit('user')
         cy.get("#edit-name").type(`${testUsername}`)
