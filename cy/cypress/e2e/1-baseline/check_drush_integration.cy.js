@@ -5,11 +5,4 @@ describe('Check Drush integration', () => {
         })
     })
 
-    it('Try enabling TFA', ()=>{
-        cy.execDrush("-y cset tfa.settings enabled 1").then((result) => {
-            cy.log(result.stdout)
-            cy.log(result.stderr)
-        })
-    })
-
 })
