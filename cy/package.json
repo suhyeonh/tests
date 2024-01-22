@@ -9,7 +9,7 @@
   },
   "author": "Joseph Zhao <pandaski@outlook.com.au>",
   "dependencies": {
-    "cypress": "^13.6.2",
+    "cypress": "^13.6.3",
     "cypress-file-upload": "^5.0.7",
     "cypress-xpath": "^2.0.1"
   },

@@ -126,6 +126,16 @@ Similar to Drush, you need to tell Cypress where to find Composer. This can be c
 "composerCmdLine": "cd ..; composer %command"
 ```
 
+*TFA Tests*
+Some of the tests require an encryption key. For example, a base-64 AES 256 bit key can be generated using
+```bash
+openssl rand -base64 32
+```
+which should be then added to the env file as
+```json
+"encryption_profile_key": "<your key here>"
+```
+
 You are now set up and ready to run tests!
 
 ## Running tests
