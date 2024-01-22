@@ -135,7 +135,7 @@ Cypress.Commands.add("confirm", () => {
 })
 
 export function randString(length) {
-  return (Math.random() + 1).toString(36).substring(length)
+  return (Math.random() + 1).toString(36).substring(2, length+2)
 }
 
 

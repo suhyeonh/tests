@@ -61,12 +61,15 @@ describe('Check TFA setup', () => {
         cy.execDrush('-y cset tfa.settings required_roles.govcms_content_author govcms_content_author')
         cy.execDrush('-y cset tfa.settings required_roles.govcms_content_approver govcms_content_approver')
         cy.execDrush('-y cset tfa.settings required_roles.govcms_site_administrator govcms_site_administrator')
+        cy.execDrush('-y cset tfa.settings required_roles.authenticated authenticated')
         // Set Encryption profile
         cy.execDrush(`-y cset tfa.settings encryption ${testProfile}`)
     })
 
     it('Check new user is asked to enable TFA', () => {
-        cy.visit('user/logout')
+      cy.clearCookies()
+
+      cy.visit('user/logout')
         // Log in as the new user.
         cy.visit('user')
         cy.get("#edit-name").type(`${testUsername}`)
@@ -105,15 +108,15 @@ describe('Check TFA setup', () => {
     })
 
     it('Clean up', () => {
-        // Disable TFA.
-        cy.execDrush('-y cset tfa.settings enabled 0')
-        cy.drupalLogin()
-        // Remove created key, which automatically deletes the created profile as well.
-        cy.visit(`admin/config/system/keys/manage/${testKey}/delete?destination=/admin/config/system/keys`)
-        cy.get('#edit-submit').click()
-        cy.get('.messages-list__item').contains(`The key ${testKey} has been deleted.`)
-        // Remove user created for testing purposes
-        cy.execDrush(`-y user:cancel --delete-content ${testUsername}`)
+      // Disable TFA.
+      cy.execDrush('-y cset tfa.settings enabled 0')
+      cy.drupalLogin()
+      // Remove created key, which automatically deletes the created profile as well.
+      cy.visit(`admin/config/system/keys/manage/${testKey}/delete?destination=/admin/config/system/keys`)
+      cy.get('#edit-submit').click()
+      cy.get('.messages-list__item').contains(`The key ${testKey} has been deleted.`)
+      // Remove user created for testing purposes
+      cy.execDrush(`-y user:cancel --delete-content ${testUsername}`)
     })
 
 })
