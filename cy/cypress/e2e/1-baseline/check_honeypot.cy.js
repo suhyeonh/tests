@@ -19,12 +19,16 @@ describe('Check Honeypot traps are enabled on webforms', () => {
     cy.visit('user/password')
     cy.get('[data-drupal-selector="edit-name"]').type('test@example.com')
     cy.get(`[data-drupal-selector="edit-${randomString}"]`).type('Im a hacker!', {force: true})
+    // Enabled logging to ensure honeypot blocking can be checked
+    cy.execDrush('pm:install dblog -y')
     // Wipe Watchdog logs
     cy.execDrush('wd all -y')
     // Submit form
     cy.confirm()
     // Check Watchdog logs for honeypot
     cy.execDrush('ws | grep honeypot')
+    //disabled Watchdog
+    cy.execDrush('pm:uninstall dblog -y')
   })
 
 })
