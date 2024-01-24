@@ -9,8 +9,9 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import cypress-xpath
+// Import Cypress plugins
 import "cypress-xpath";
+import "cypress-file-upload";
 
 // Import commands.js
 import "./cypress";
