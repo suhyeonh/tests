@@ -55,7 +55,8 @@ describe('Check TFA setup', () => {
     })
 
     it('Set up TFA', () =>{
-        cy.execDrush('-y cset tfa.settings enabled 1')
+        cy.drupalLogin()
+        // Configure TFA settings
         cy.execDrush('-y cset tfa.settings validation_skip 10')
         // Enforce TFA set up for Content Author, Content Approver, and Site Admin roles.
         cy.execDrush('-y cset tfa.settings required_roles.govcms_content_author govcms_content_author')
@@ -64,11 +65,14 @@ describe('Check TFA setup', () => {
         cy.execDrush('-y cset tfa.settings required_roles.authenticated authenticated')
         // Set Encryption profile
         cy.execDrush(`-y cset tfa.settings encryption ${testProfile}`)
+        // Enable TFA module.
+        cy.get('#toolbar-link-system-admin_config').click();
+        cy.get(':nth-child(1) > :nth-child(1) > .panel__content > .admin-list--panel > :nth-child(3) > .admin-item__title > .admin-item__link').click();
+        cy.get('[data-drupal-selector="edit-tfa-enabled"]').click()
+        cy.get('#edit-submit').click();
     })
 
     it('Check new user is asked to enable TFA', () => {
-      cy.clearCookies()
-
       cy.visit('user/logout')
         // Log in as the new user.
         cy.visit('user')
