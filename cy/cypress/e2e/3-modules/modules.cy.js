@@ -6,6 +6,10 @@ let modules = Object.entries(packages['require']).filter((str) => {
 
 
 describe('Cross check module and library versions', () => {
+  it('Ensure modules are installed', () => {
+    cy.composerCommand('install')
+  })
+
   modules.forEach((module, i) => {
     it(`${module}`, () => {
       const moduleVersion = module[1].substring(0, module[1].indexOf(" as"));
