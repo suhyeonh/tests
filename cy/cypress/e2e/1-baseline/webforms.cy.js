@@ -33,7 +33,7 @@ describe('User can create webforms with file attachment fields', () => {
     cy.getDrupal('edit-webform-0-target-id').select(`${formTitle}`)
     cy.confirm()
     cy.get('.messages.messages--status').contains(`Webform web${formTitle} has been created.`)
-    // Check webform is visible when not logged in
+    // Check webform is visible when not logged in, need to get webform node ID.
     cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id=\\"${formTitle}\\"'`).then((result) => {
       cy.drupalLogout()
       cy.visit(`node/${result.stdout}`)

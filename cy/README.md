@@ -155,7 +155,7 @@ yarn run cypress run
 for all tests, or for specific test(s)
 
 ```
-yarn run cypress run --spec cypress/e2e/1-baseline/create_user_with_role.cy.js
+yarn run cypress run --spec cypress/e2e/1-baseline/user_creation.cy.js
 ```
 or
 ```
