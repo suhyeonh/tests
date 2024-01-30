@@ -134,6 +134,13 @@ Cypress.Commands.add("confirm", () => {
   cy.get('[data-drupal-selector="edit-submit"]').click()
 })
 
+Cypress.Commands.add("getDrupal", (element) => {
+  cy.get(`[data-drupal-selector="${element}"]`)
+})
+
+
+
+
 export function randString(length) {
   return (Math.random() + 1).toString(36).substring(2, length+2)
 }

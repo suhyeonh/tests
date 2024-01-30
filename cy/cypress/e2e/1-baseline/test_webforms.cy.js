@@ -8,7 +8,7 @@ describe('User can create webforms with file attachment fields', () => {
   })
 
   it('Create test webform with file field', () => {
-    cy.drupalLogin()
+    cy.userLogin('govcms-site-admin')
     cy.visit('admin/structure/webform/add')
     cy.get('[data-drupal-selector="title"]').type(`${formTitle}`)
     cy.wait(500)
@@ -27,11 +27,21 @@ describe('User can create webforms with file attachment fields', () => {
   })
 
   it('Test adding webform to standard page', () => {
-
-
+    cy.userLogin('govcms-site-admin')
+    cy.visit('node/add/webform')
+    cy.getDrupal('edit-title-0-value').type(`web${formTitle}`)
+    cy.getDrupal('edit-webform-0-target-id').select(`${formTitle}`)
+    cy.confirm()
+    cy.get('.messages.messages--status').contains(`Webform web${formTitle} has been created.`)
+    // Check webform is visible when not logged in
+    cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id=\\"${formTitle}\\"'`).then((result) => {
+      cy.drupalLogout()
+      cy.visit(`node/${result.stdout}`)
+      }
+    )
   })
 
   it('Clean up', () => {
-    cy.execDrush('-y pm:uninstall webform_node; drush pm:uninstall webform')
+    cy.execDrush('entity:delete node; drush -y pm:uninstall webform_node; drush pm:uninstall webform')
   })
 })
