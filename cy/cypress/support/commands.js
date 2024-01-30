@@ -131,7 +131,7 @@ Cypress.Commands.add("type_ckeditor", (element, content) => {
 })
 
 Cypress.Commands.add("confirm", () => {
-  cy.get('#edit-submit').click()
+  cy.get('[data-drupal-selector="edit-submit"]').click()
 })
 
 export function randString(length) {
