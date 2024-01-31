@@ -138,6 +138,14 @@ Cypress.Commands.add("getDrupal", (element) => {
     cy.get(`[data-drupal-selector="${element}"]`)
 })
 
+Cypress.Commands.add("install", (module) => {
+    cy.execDrush(`-y pm:install ${module}`)
+})
+
+Cypress.Commands.add("uninstall", (module) => {
+    cy.execDrush(`-y pm:uninstall ${module}`)
+})
+
 
 export function randString(length) {
     return (Math.random() + 1).toString(36).substring(2, length + 2)
