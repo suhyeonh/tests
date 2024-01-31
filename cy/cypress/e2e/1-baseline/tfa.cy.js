@@ -35,7 +35,7 @@ describe('Check TFA setup', () => {
         cy.wait(250)
         cy.get('[data-drupal-selector="edit-encryption-key"]').select(testKey)
         cy.wait(250)
-        cy.get('#edit-submit').click({ force: true })
+        cy.get('#edit-submit').click({force: true})
         cy.get('.messages-list__item').contains(`Saved the ${testProfile} encryption profile.`)
     })
 
@@ -54,7 +54,7 @@ describe('Check TFA setup', () => {
         cy.get('.messages.messages--error').should('not.exist')
     })
 
-    it('Set up TFA', () =>{
+    it('Set up TFA', () => {
         cy.drupalLogin()
         // Configure TFA settings
         cy.execDrush('-y cset tfa.settings validation_skip 10')
@@ -73,7 +73,7 @@ describe('Check TFA setup', () => {
     })
 
     it('Check new user is asked to enable TFA', () => {
-      cy.visit('user/logout')
+        cy.visit('user/logout')
         // Log in as the new user.
         cy.visit('user')
         cy.get("#edit-name").type(`${testUsername}`)
@@ -112,15 +112,15 @@ describe('Check TFA setup', () => {
     })
 
     it('Clean up', () => {
-      // Disable TFA.
-      cy.execDrush('-y cset tfa.settings enabled 0')
-      cy.drupalLogin()
-      // Remove created key, which automatically deletes the created profile as well.
-      cy.visit(`admin/config/system/keys/manage/${testKey}/delete?destination=/admin/config/system/keys`)
-      cy.get('#edit-submit').click()
-      cy.get('.messages-list__item').contains(`The key ${testKey} has been deleted.`)
-      // Remove user created for testing purposes
-      cy.execDrush(`-y user:cancel --delete-content ${testUsername}`)
+        // Disable TFA.
+        cy.execDrush('-y cset tfa.settings enabled 0')
+        cy.drupalLogin()
+        // Remove created key, which automatically deletes the created profile as well.
+        cy.visit(`admin/config/system/keys/manage/${testKey}/delete?destination=/admin/config/system/keys`)
+        cy.get('#edit-submit').click()
+        cy.get('.messages-list__item').contains(`The key ${testKey} has been deleted.`)
+        // Remove user created for testing purposes
+        cy.execDrush(`-y user:cancel --delete-content ${testUsername}`)
     })
 
 })

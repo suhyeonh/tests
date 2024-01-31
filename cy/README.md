@@ -1,16 +1,19 @@
 # Cypress Integration for GovCMS Testing
 
-This documentation covers the integration of Cypress for testing the GovCMS distribution, offering a collection of Cypress commands designed for Drupal/GovCMS website testing.
+This documentation covers the integration of Cypress for testing the GovCMS distribution, offering a collection of
+Cypress commands designed for Drupal/GovCMS website testing.
 
 ## Features
 
 ### Drupal Collection
 
-Our Drupal collection provides Cypress commands tailored for interacting with Drupal/GovCMS websites. It simplifies the testing process by offering the following commands:
+Our Drupal collection provides Cypress commands tailored for interacting with Drupal/GovCMS websites. It simplifies the
+testing process by offering the following commands:
 
 #### drupalLogin(username, password)
 
-Initiate an authenticated session for a user by providing a username and password as arguments. This simulates the login action.
+Initiate an authenticated session for a user by providing a username and password as arguments. This simulates the login
+action.
 
 Usage example:
 
@@ -44,7 +47,9 @@ Usage example with an array of commands and arguments:
 cy.drupalDrushCommand(['upwd', 'admin', 'admin']);
 ```
 
-These Cypress commands aim to streamline testing and interaction with your Drupal/GovCMS website when working with the GovCMS distribution. You can automate actions, verify functionality, and ensure the reliability of your testing processes.
+These Cypress commands aim to streamline testing and interaction with your Drupal/GovCMS website when working with the
+GovCMS distribution. You can automate actions, verify functionality, and ensure the reliability of your testing
+processes.
 
 # Running Cypress locally
 
@@ -79,6 +84,7 @@ which should open Cypress' browser testing app.
 In order to use these tests, you will have to configure some local env vars. First,
 we assume that you already have a local GovCMS instance running (i.e using Docker)
 with global superadmin already created. We then need to configure two things:
+
 - local url
 - Superadmin details.
 - Drush location
@@ -117,21 +123,27 @@ necessary to execute Drush locally. In the case of Docker Compose, we set:
   "drupalDrushCmdLine" : "docker compose exec govcms bash -c \"drush %command\""
 }
 ```
+
 where `govcms` is the docker container name.
 
 *Composer location*
 
-Similar to Drush, you need to tell Cypress where to find Composer. This can be configured by setting `composerCmdLine`, for example:
+Similar to Drush, you need to tell Cypress where to find Composer. This can be configured by setting `composerCmdLine`,
+for example:
+
 ```json
 "composerCmdLine": "cd ..; composer %command"
 ```
 
 *TFA Tests*
 Some of the tests require an encryption key. For example, a base-64 AES 256 bit key can be generated using
+
 ```bash
 openssl rand -base64 32
 ```
+
 which should be then added to the env file as
+
 ```json
 "encryption_profile_key": "<your key here>"
 ```
@@ -157,7 +169,9 @@ for all tests, or for specific test(s)
 ```
 yarn run cypress run --spec cypress/e2e/1-baseline/user_creation.cy.js
 ```
+
 or
+
 ```
 yarn run cypress run --spec cypress/e2e/*
 ```

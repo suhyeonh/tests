@@ -28,23 +28,23 @@ Cypress.Commands.add("execDrush", (command) => {
 
 // Drupal drush command (previous).
 Cypress.Commands.add("drupalDrushCommand", (command) => {
-  var cmd = Cypress.env('drupalDrushCmdLine');
+    var cmd = Cypress.env('drupalDrushCmdLine');
 
-  if (cmd == null) {
-    if (Cypress.env('localEnv') === "lando") {
-      cmd = 'lando drush %command'
-    } else {
-      cmd = 'drush %command'
+    if (cmd == null) {
+        if (Cypress.env('localEnv') === "lando") {
+            cmd = 'lando drush %command'
+        } else {
+            cmd = 'drush %command'
+        }
     }
-  }
 
-  if (typeof command === 'string') {
-    command = [command];
-  }
+    if (typeof command === 'string') {
+        command = [command];
+    }
 
-  const execCmd = cmd.replace('%command', command.join(' '));
+    const execCmd = cmd.replace('%command', command.join(' '));
 
-  return cy.exec(execCmd);
+    return cy.exec(execCmd);
 });
 
 // Composer command.
@@ -126,23 +126,21 @@ Cypress.Commands.add("userLogin", (siteRole) => {
 Cypress.Commands.add("type_ckeditor", (element, content) => {
     cy.window()
         .then(win => {
-          win.CKEDITOR.instances[element].setData(content);
+            win.CKEDITOR.instances[element].setData(content);
         });
 })
 
 Cypress.Commands.add("confirm", () => {
-  cy.get('[data-drupal-selector="edit-submit"]').click()
+    cy.get('[data-drupal-selector="edit-submit"]').click()
 })
 
 Cypress.Commands.add("getDrupal", (element) => {
-  cy.get(`[data-drupal-selector="${element}"]`)
+    cy.get(`[data-drupal-selector="${element}"]`)
 })
 
 
-
-
 export function randString(length) {
-  return (Math.random() + 1).toString(36).substring(2, length+2)
+    return (Math.random() + 1).toString(36).substring(2, length + 2)
 }
 
 
