@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: govcmstesting/php:8.2-apache
+      image: govcmstesting/cli:8.2-apache
       
     services:
       mariadb:
@@ -39,7 +39,6 @@ jobs:
       run: |
        rm -rf /var/www/html
        ln -sf $GITHUB_WORKSPACE/web /var/www/html
-       rm -rf tests
        service apache2 restart
 
     - name: Install GovCMS site
