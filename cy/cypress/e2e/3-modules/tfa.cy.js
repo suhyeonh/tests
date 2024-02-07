@@ -4,6 +4,7 @@ import {randString} from "../../support/commands";
 const testKey = randString(10);
 const testProfile = randString(10);
 const testUsername = randString(10);
+const encryption_profile_key = "DY+T5R9K09+pRy84wZvlF4PjrBzGEXcRDA/NEV6B8/I="
 
 
 describe('Check TFA setup', () => {
@@ -20,7 +21,7 @@ describe('Check TFA setup', () => {
         cy.get('[data-drupal-selector="edit-key-type-settings-key-size"]').select('256')
         cy.get('[data-drupal-selector="edit-key-provider"]').select('config')
         cy.get('[data-drupal-selector="edit-key-provider-settings-base64-encoded"]').check()
-        cy.get('[data-drupal-selector="edit-key-input-settings-key-value"]').type(Cypress.env("encryption_profile_key"))
+        cy.get('[data-drupal-selector="edit-key-input-settings-key-value"]').type(encryption_profile_key)
         cy.get('[data-drupal-selector="edit-key-input-settings-base64-encoded"]').check()
         cy.get('#key-add-form').submit()
         cy.get('.messages-list__item').contains(`The key ${testKey} has been added.`)
