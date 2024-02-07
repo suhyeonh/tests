@@ -16,15 +16,6 @@ Cypress.Commands.add("aliasAll", () =>
 )
 
 // Drupal drush command.
-// Cypress.Commands.add("execDrush", (command) => {
-//     const cmd = Cypress.env('drupalDrushCmdLine')
-//     if (typeof command !== 'string') {
-//         throw Error("Drush command must be a string")
-//     }
-//     command = [command];
-//     const execCmd = cmd.replace('%command', command.join(' '));
-//     return cy.exec(execCmd);
-// });
 Cypress.Commands.add("execDrush", (command) => {
     var cmd = Cypress.env('drupalDrushCmdLine');
 
@@ -32,28 +23,7 @@ Cypress.Commands.add("execDrush", (command) => {
         if (Cypress.env('localEnv') === "lando") {
             cmd = 'lando drush %command'
         } else {
-            cmd = "$(which drush) %command"
-        }
-    }
-
-    if (typeof command === 'string') {
-        command = [command];
-    }
-
-    const execCmd = cmd.replace('%command', command.join(' '));
-    return cy.exec(execCmd);
-});
-
-
-// Drupal drush command (previous).
-Cypress.Commands.add("drupalDrushCommand", (command) => {
-    var cmd = Cypress.env('drupalDrushCmdLine');
-
-    if (cmd == null) {
-        if (Cypress.env('localEnv') === "lando") {
-            cmd = 'lando drush %command'
-        } else {
-            cmd = 'drush %command'
+            cmd = '$(which drush) %command'
         }
     }
     if (typeof command === 'string') {
@@ -70,9 +40,9 @@ Cypress.Commands.add("composerCommand", (command) => {
     if (cmd == null) {
         console.log(Cypress.env())
         if (Cypress.env('localEnv') === "lando") {
-            cmd = 'cd ../..; lando composer %command'
+            cmd = 'cd /app; lando composer %command'
         } else {
-            cmd = 'cd ../..; composer %command'
+            cmd = 'cd /app; composer %command'
         }
     }
 

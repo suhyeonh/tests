@@ -26,7 +26,7 @@
         "cypress:open": "cypress open",
         "cypress:run": "cypress run",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx,.json,.eslintrc .",
-        "lint:fix": "yarn lint --fix",
+        "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx,.json,.eslintrc .",
         "stop-only": "npx stop-only --skip .cy,node_modules --exclude e2e.coffee"
     },
     "husky": {
@@ -36,12 +36,12 @@
     },
     "lint-staged": {
         "*.coffee": [
-            "yarn stop-only --folder",
+            "npx stop-only --folder",
             "git add"
         ],
         "*.{js,jsx,ts,tsx,json,eslintrc}": [
-            "yarn stop-only --folder",
-            "yarn eslint --fix",
+            "npx stop-only --folder",
+            "npm run eslint --fix",
             "git add"
         ]
     },
@@ -49,6 +49,5 @@
         "url": "https://github.com/govcms-tests/tests/issues"
     },
     "homepage": "https://github.com/govcms-tests/tests#readme",
-    "main": "cypress.config.js",
-    "keywords": []
+    "main": "cypress.config.js"
 }

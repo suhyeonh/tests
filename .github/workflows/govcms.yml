@@ -47,10 +47,7 @@ jobs:
     - name: Install GovCMS dependencies
       run: |
        cd app
-       composer config --no-plugins allow-plugins.phpstan/extension-installer 1
-       composer require --dev drupal/core-dev:"^10.1"
-       chown -R www-data:www-data web/sites
-       rm -rf tests
+       composer update --profile --prefer-dist --optimize-autoloader
 
     - name: Setup webserver
       run: |
@@ -62,7 +59,8 @@ jobs:
       run: |
        cd app
        ./bin/drush site-install -y govcms --db-url=mysql://root:govcms@mariadb:3306/govcms --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
-   
+       chown -R www-data:www-data web/sites
+
     - uses: actions/checkout@v4
       with:
         path: 'app/tests'
