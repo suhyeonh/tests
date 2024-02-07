@@ -16,15 +16,34 @@ Cypress.Commands.add("aliasAll", () =>
 )
 
 // Drupal drush command.
+// Cypress.Commands.add("execDrush", (command) => {
+//     const cmd = Cypress.env('drupalDrushCmdLine')
+//     if (typeof command !== 'string') {
+//         throw Error("Drush command must be a string")
+//     }
+//     command = [command];
+//     const execCmd = cmd.replace('%command', command.join(' '));
+//     return cy.exec(execCmd);
+// });
 Cypress.Commands.add("execDrush", (command) => {
-    const cmd = Cypress.env('drupalDrushCmdLine');
-    if (typeof command !== 'string') {
-        throw Error("Drush command must be a string")
+    var cmd = Cypress.env('drupalDrushCmdLine');
+
+    if (cmd == null) {
+        if (Cypress.env('localEnv') === "lando") {
+            cmd = 'lando drush %command'
+        } else {
+            cmd = "$(which drush) %command"
+        }
     }
-    command = [command];
+
+    if (typeof command === 'string') {
+        command = [command];
+    }
+
     const execCmd = cmd.replace('%command', command.join(' '));
     return cy.exec(execCmd);
 });
+
 
 // Drupal drush command (previous).
 Cypress.Commands.add("drupalDrushCommand", (command) => {
@@ -37,13 +56,10 @@ Cypress.Commands.add("drupalDrushCommand", (command) => {
             cmd = 'drush %command'
         }
     }
-
     if (typeof command === 'string') {
         command = [command];
     }
-
     const execCmd = cmd.replace('%command', command.join(' '));
-
     return cy.exec(execCmd);
 });
 
