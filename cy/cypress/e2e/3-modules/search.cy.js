@@ -26,8 +26,8 @@ describe('Search functionality works as expected', () => {
         cy.getDrupal('edit-run').click()
 
         // Give users access to search
-        cy.execDrush('-y role:perm:add anonymous \\"search content\\"')
-        cy.execDrush('-y role:perm:add authenticated \\"search content\\"')
+        cy.execDrush('-y role:perm:add anonymous \'search content\'')
+        cy.execDrush('-y role:perm:add authenticated \'search content\'')
     })
 
     it('Check anonymous user can search', () => {
