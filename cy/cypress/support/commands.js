@@ -40,9 +40,9 @@ Cypress.Commands.add("composerCommand", (command) => {
     if (cmd == null) {
         console.log(Cypress.env())
         if (Cypress.env('localEnv') === "lando") {
-            cmd = 'cd /app; lando composer %command'
+            cmd = 'cd ../../.; lando composer %command'
         } else {
-            cmd = 'cd /app; composer %command'
+            cmd = 'cd ../../.; composer %command'
         }
     }
 

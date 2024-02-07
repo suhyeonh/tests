@@ -1,4 +1,4 @@
-import packages from '/app/composer.json'
+import packages from '../../../../../composer.json'
 
 let modules = Object.entries(packages['require']).filter((str) => {
     return str[1].indexOf('^') === 0
