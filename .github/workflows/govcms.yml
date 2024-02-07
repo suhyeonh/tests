@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: govcmstesting/cli:8.2-apache
+      image: govcmstesting/ci:8.2-apache
       
     services:
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:lts
         env:
           MYSQL_DATABASE: govcms
           MYSQL_ROOT_PASSWORD: govcms
@@ -56,4 +56,4 @@ jobs:
 
     - name: Run Cypress tests
       run: |
-        cd tests/cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine=$GITHUB_WORKSPACE/bin/drush
+        cd tests/cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine="$GITHUB_WORKSPACE/bin/drush --root=/var/www/html %command"
