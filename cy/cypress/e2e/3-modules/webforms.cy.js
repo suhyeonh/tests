@@ -35,7 +35,7 @@ describe('User can create webforms with file attachment fields', () => {
         cy.confirm()
         cy.get('.messages.messages--status').contains(`Webform web${formTitle} has been created.`)
         // Check webform is visible when not logged in, need to get webform node ID.
-        cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id=\\"${formTitle}\\"'`).then((result) => {
+        cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id="${formTitle}"'`).then((result) => {
             cy.drupalLogout()
             cy.visit(`node/${result.stdout}`)
         })
@@ -43,12 +43,12 @@ describe('User can create webforms with file attachment fields', () => {
 
     it('Test file submission as anonymous user', () => {
         // Need to give anonymous user ability to create new webforms
-        cy.execDrush('role:perm:add anonymous \\"create webform content\\"')
+        cy.execDrush('role:perm:add anonymous \'create webform content\'')
         // Need to disable Honeypot minimum time limit to allow Cypress to fill form
         cy.execDrush('-y cset honeypot.settings time_limit 0')
 
         cy.visit('user/logout')
-        cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id=\\"${formTitle}\\"'`).then((result) => {
+        cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id="${formTitle}"'`).then((result) => {
             cy.visit(`node/${result.stdout}`)
         })
         cy.getDrupal('edit-name').type(randString(10))
