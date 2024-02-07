@@ -1,0 +1,54 @@
+version: '2.1'
+
+jobs:
+  cypress:
+    docker:
+      - image: 'govcmstesting/ci:8.2-apache'
+    working_directory: /app
+    steps:
+      - run:
+          name: Install GovCMS distribution
+          command: |
+            composer create-project govcms/govcms --prefer-dist --remove-vcs .
+      - run:
+          name: Setup webserver
+          command: |
+            echo "127.0.0.1 local.govcms.gov.au" | tee --append /etc/hosts
+            service apache2 restart
+      - run:
+          name: Install GovCMS site
+          command: >
+            cd web
+
+            ../bin/drush si -y govcms
+            --db-url=sqlite://sites/default/files/.ht.sqlite
+            --site-name='GovCMS'
+            --account-pass=password
+            install_configure_form.enable_update_status_emails=NULL
+            install_configure_form.enable_update_status_module=NULL || true
+
+            chown -R www-data:www-data /app/web/sites
+      - run:
+          name: Checkout tests
+          command: |
+            git config --global --add safe.directory /tmp/_circleci_local_build_repo
+      - checkout:
+          path: 'tests'
+      - run:
+          name: Install Cypress Dependencies
+          command: |
+            cd tests/cy && npm ci
+      - run:
+          name: Run Cypress tests
+          command: |
+            cd tests/cy && npx cypress run --config baseUrl=http://local.govcms.gov.au/
+      - store_artifacts:
+          path: tests/cy/cypress/videos
+      - store_artifacts:
+          path: tests/cy/cypress/screenshots
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - cypress
