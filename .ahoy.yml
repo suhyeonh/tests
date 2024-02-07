@@ -51,8 +51,9 @@ commands:
   cypress:
     usage: Run all Cypress tests
     cmd: |
-      cd cy &&
-      yarn run cypress run "cypress/e2e/*"
+      cd cy
+      export CYPRESS_BASE_URL=http://localhost:8888
+      npx cypress run "cypress/e2e/*" --env drupalDrushCmdLine="docker compose exec govcms drush %command"
 
   cr:
     usage: Alias for 'cypress'
@@ -62,5 +63,6 @@ commands:
   co:
     usage: Open a new Cypress testing window
     cmd: |
-      cd cy &&
-      yarn run cypress open
+      cd cy
+      export CYPRESS_BASE_URL=http://localhost:8888
+      npx cypress open --env drupalDrushCmdLine="docker compose exec govcms drush %command"
