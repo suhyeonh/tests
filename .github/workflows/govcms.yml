@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: govcmstesting/ci:8.2-apache
+      image: govcmstesting/php:8.2-apache
       
     services:
       mariadb:
@@ -46,9 +46,6 @@ jobs:
       run: |
        bin/drush site-install -y govcms --db-url=mysql://root:govcms@mariadb:3306/govcms --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
        chown -R www-data:www-data web/sites
-       cd /var/www/html
-       ls -la
-       curl http://localhost
 
     - uses: actions/checkout@v4
       with:
