@@ -71,5 +71,4 @@ jobs:
 
     - name: Run Cypress tests
       run: |
-        export PATH=$PATH:/app/tests/vendor/bin:/app/vendor/bin
-        cd app/tests/cy && npx cypress run --config baseUrl=http://localhost/
+        cd app/tests/cy && npx cypress run --config baseUrl=http://localhost/ --env drupalDrushCmdLine=$GITHUB_WORKSPACE/app/bin/drush
