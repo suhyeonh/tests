@@ -2,7 +2,10 @@
 // As a GovCMS site administrator, I should be able to create new
 // users with either a 'Content Author', 'Content Approver', or
 // 'Site Administrator' role.
+import {randString} from "../../support/commands";
+
 const testRole = 'govcms-site-admin'
+const testName = randString(10)
 
 describe('User can create a new user with a role', () => {
     const roles = ['Content Author', 'Content Approver', 'Site Administrator']
@@ -22,25 +25,24 @@ describe('User can create a new user with a role', () => {
 // govcms-content-author would be Content Author
 // role is the user that should login to Drupal
 Cypress.Commands.add('checkUserCreation', (userrole, testRole) => {
-    let user_role_machine_name = 'govcms-' + userrole.toLowerCase().replace(' ', '-')
-    let password = user_role_machine_name + '#123'
+    let password = 'DY+T5R9K09+pRy84wZvlF4PjrBzGEXcRDA/NEV6B8/I='
     cy.userLogin(testRole).then(() => {
         cy.get('#toolbar-link-entity-user-collection')
             .click({force: true})
         cy.get('.local-actions__item > .button')
             .click({force: true})
         cy.get('#edit-mail')
-            .type('cypress-tester-' + user_role_machine_name + '@test.com', {force: true})
+            .type(testName + '@test.com', {force: true})
         cy.get('#edit-name')
-            .type('@cypresstest-' + user_role_machine_name, {force: true})
+            .type(testName, {force: true})
         cy.get('#edit-pass-pass1', {force: true})
             .type(password, {force: true})
         cy.get('#edit-pass-pass2', {force: true})
             .type(password, {force: true})
         cy.get('#edit-submit')
             .click({force: true})
-        cy.get('.messages-list__item')
-            .contains('Created a new user account')
+        cy.execDrush(`user:information ${testName} | grep ${testName}`)
+
         cy.get('#toolbar-link-entity-user-collection')
             .click({force: true})
         cy.get('#edit-user-bulk-form-0')

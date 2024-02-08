@@ -19,7 +19,7 @@ describe('User can upload files', () => {
         cy.get('[data-drupal-selector="edit-field-media-audio-file-0-upload"]').selectFile('cypress/fixtures/media/audio_test.mp3')
         cy.wait(500)
         cy.confirm()
-        cy.get('.messages.messages--status').contains(`Audio ${testFileName} has been created.`)
+        cy.execDrush(`sql:query 'SELECT * FROM media_field_data' | grep audio | grep ${testFileName}`)
     })
 
     it('Test video file upload', () => {
@@ -29,7 +29,7 @@ describe('User can upload files', () => {
         cy.get('[data-drupal-selector="edit-field-media-video-file-0-upload"]').selectFile('cypress/fixtures/media/video_test.mp4')
         cy.wait(500)
         cy.confirm()
-        cy.get('.messages.messages--status').contains(`Video ${testFileName} has been created.`)
+        cy.execDrush(`sql:query 'SELECT * FROM media_field_data' | grep video | grep ${testFileName}`)
     })
 
     it('Test image file upload', () => {
@@ -40,27 +40,27 @@ describe('User can upload files', () => {
         cy.wait(500)
         cy.get('[data-drupal-selector="edit-field-media-image-0-alt"]').type('blah blah')
         cy.confirm()
-        cy.get('.messages.messages--status').contains(`Image ${testFileName} has been created.`)
+        cy.execDrush(`sql:query 'SELECT * FROM media_field_data' | grep image | grep ${testFileName}`)
     })
 
     it('Test PDF file upload', () => {
         cy.drupalLogin(testUser, 'password')
         cy.visit('media/add/document')
-        cy.get('[data-drupal-selector="edit-name-0-value"]').type(`${testFileName}`)
+        cy.get('[data-drupal-selector="edit-name-0-value"]').type(`pdf${testFileName}`)
         cy.get('[data-drupal-selector="edit-field-media-document-0-upload"]').selectFile('cypress/fixtures/media/pdf_test.pdf')
         cy.wait(500)
         cy.confirm()
-        cy.get('.messages.messages--status').contains(`Document ${testFileName} has been created.`)
+        cy.execDrush(`sql:query 'SELECT * FROM media_field_data' | grep document | grep pdf${testFileName}`)
     })
 
     it('Test DOCX file upload', () => {
         cy.drupalLogin(testUser, 'password')
         cy.visit('media/add/document')
-        cy.get('[data-drupal-selector="edit-name-0-value"]').type(`${testFileName}`)
+        cy.get('[data-drupal-selector="edit-name-0-value"]').type(`docx${testFileName}`)
         cy.get('[data-drupal-selector="edit-field-media-document-0-upload"]').selectFile('cypress/fixtures/media/docx_test.docx')
         cy.wait(500)
         cy.confirm()
-        cy.get('.messages.messages--status').contains(`Document ${testFileName} has been created.`)
+        cy.execDrush(`sql:query 'SELECT * FROM media_field_data' | grep document | grep docx${testFileName}`)
     })
 
     after('Clean up', () => {
