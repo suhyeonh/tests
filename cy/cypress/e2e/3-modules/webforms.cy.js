@@ -38,6 +38,7 @@ describe('User can create webforms with file attachment fields', () => {
         cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id="${formTitle}"'`).then((result) => {
             cy.drupalLogout()
             cy.visit(`node/${result.stdout}`)
+          cy.getDrupal('edit-file-upload')
         })
     })
 
