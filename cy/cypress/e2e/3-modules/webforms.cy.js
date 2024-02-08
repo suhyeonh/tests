@@ -41,6 +41,22 @@ describe('User can create webforms with file attachment fields', () => {
         })
     })
 
+    it('Test file submission as authenticated user', () => {
+        // Need to disable Honeypot minimum time limit to allow Cypress to fill form
+        cy.execDrush('-y cset honeypot.settings time_limit 0')
+        cy.drupalLogin()
+        cy.execDrush(`sql:query 'SELECT entity_id FROM node__webform WHERE webform_target_id="${formTitle}"'`).then((result) => {
+            cy.visit(`node/${result.stdout}`)
+        })
+        cy.getDrupal('edit-name').type(randString(10))
+        cy.getDrupal('edit-file-upload').selectFile('cypress/fixtures/media/pdf_test.pdf')
+        cy.getDrupal('edit-actions-submit').click()
+        // Confirm file was uploaded to the DB
+        cy.execDrush("sql:query 'SELECT filename FROM file_managed' | grep pdf_test.pdf").its('stdout').should('not.be.empty')
+        // Confirm submission was created
+        cy.execDrush(`sql:query 'SELECT sid,webform_id FROM webform_submission' | grep ${formTitle}`).its('stdout').should('not.be.empty')
+    })
+
     it('Test file submission as anonymous user', () => {
         // Need to give anonymous user ability to create new webforms
         cy.execDrush('role:perm:add anonymous \'create webform content\'')
