@@ -27,7 +27,7 @@ module.exports = defineConfig({
         viewports_desktop: 'macbook-15',
         viewports_mobile: 'iphone-6',
     },
-    video: false,
+    video: true,
     e2e: {
         setupNodeEvents(on, config) {
             return require('./cypress/plugins/index.js')(on, config)
