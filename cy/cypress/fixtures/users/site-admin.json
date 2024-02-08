@@ -1,8 +1,4 @@
 {
-  "firstname": "Malcolm",
-  "lastname": "Reynolds",
-  "email": "malcolm.reynolds@serenity.com",
-  "password": "12345",
-  "lang": "english",
-  "role": "site_admin"
+  "user": "admin",
+  "password": "password"
 }

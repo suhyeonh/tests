@@ -1,7 +1,7 @@
 // --- Commands (Functions) ----------------------------------------------------
 
 // Command to check images are loading properly.
-Cypress.Commands.add('checkImagesLoading', { prevSubject: 'element' }, (subject) => {
+Cypress.Commands.add('checkImagesLoading', {prevSubject: 'element'}, (subject) => {
     cy.get(subject.selector).as('container')
 
     cy.get('@container').find('img').each(($img) => {

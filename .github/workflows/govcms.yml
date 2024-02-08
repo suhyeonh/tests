@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: govcmstesting/php:8.1-apache
+      image: govcmstesting/ci:8.2-apache
       
     services:
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:lts
         env:
           MYSQL_DATABASE: govcms
           MYSQL_ROOT_PASSWORD: govcms
@@ -29,48 +29,32 @@ jobs:
       with:
         repository: 'govcms/govcms'
         ref: '3.x-develop'
-        path: 'app'
-
-    - name: Cache Composer packages
-      id: composer-cache-govcms
-      run: |
-        cd app
-        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-  
-    - uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache-govcms.outputs.dir }}
-        key: ${{ runner.os }}-php-govcms-${{ hashFiles('app/composer.json') }}
-        restore-keys: |
-          ${{ runner.os }}-php-govcms-
+        path: '.'
 
     - name: Install GovCMS dependencies
       run: |
-       cd app
-       composer config --no-plugins allow-plugins.phpstan/extension-installer 1
-       composer require --dev drupal/core-dev:"^10.1"
-       chown -R www-data:www-data web/sites
-       rm -rf tests
+       composer update --profile --prefer-dist --optimize-autoloader
 
     - name: Setup webserver
       run: |
        rm -rf /var/www/html
-       ln -sf $GITHUB_WORKSPACE/app/web /var/www/html
+       ln -sf $GITHUB_WORKSPACE/web /var/www/html
        service apache2 restart
 
     - name: Install GovCMS site
       run: |
-       cd app
-       ./bin/drush site-install -y govcms --db-url=mysql://root:govcms@mariadb:3306/govcms --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
-   
+       bin/drush site-install -y govcms --db-url=mysql://root:govcms@mariadb:3306/govcms --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
+       sudo sed -i '$ a\$settings['"'"'file_private_path'"'"'] = '"'"'/var/www/html/sites/default/files/private'"'"';' /var/www/html/sites/default/settings.php
+       chown -R www-data:www-data web/sites
+
     - uses: actions/checkout@v4
       with:
-        path: 'app/tests'
+        path: 'tests'
 
     - name: Install dependencies
       run: |
-        cd app/tests/cy && npm ci
+        cd tests/cy && npm ci
 
     - name: Run Cypress tests
       run: |
-        cd app/tests/cy && npx cypress run --config baseUrl=http://localhost/
+        cd tests/cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine="$GITHUB_WORKSPACE/bin/drush --root=/var/www/html %command"

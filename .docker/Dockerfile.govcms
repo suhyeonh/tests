@@ -5,7 +5,7 @@ FROM govcms/govcms:10.x-latest as base
 COPY --from=drupal:10.1-php8.1-apache /opt/drupal/web/core/install.php /app/web/core/install.php
 
 # Stage 2: Final image
-FROM govcmstesting/php:8.1-apache
+FROM govcmstesting/ci:8.2-apache
 
 # Copy contents from the "base" stage to "/app/"
 COPY --from=base /app /app
@@ -21,7 +21,6 @@ RUN set -eux; \
     chown -R www-data:www-data /app/web/sites;
 
 # Set environment variables
-ENV PATH=${PATH}:/app/tests/vendor/bin:/app/vendor/bin
 ENV SIMPLETEST_BASE_URL="http://localhost"
 ENV SIMPLETEST_DB='mysql://drupal:drupal@mariadb/drupal'
 
