@@ -1,0 +1,12 @@
+name:
+    '#title': 'Your Name'
+    '#type': textfield
+    '#required': true
+    '#default_value': '[current-user:display-name]'
+file:
+    '#type': managed_file
+    '#title': File
+actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__label': 'Send message'

@@ -1,4 +1,0 @@
-name: 'GovCMS File test'
-type: module
-description: 'Support module for GovCMS file handling tests.'
-package: Testing

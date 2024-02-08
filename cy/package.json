@@ -1,27 +1,12 @@
 {
   "name": "govcms-tests-cypress",
-  "description": "Integrate Cypress for testing the GovCMS distribution",
   "version": "1.0.0",
-  "license": "MIT",
-  "repository": "https://github.com/govcms-tests/tests",
-  "author": "Joseph Zhao <pandaski@outlook.com.au>",
-  "dependencies": {
-    "cypress": "^13.3.3",
-    "cypress-file-upload": "^5.0.7"
-  },
-  "devDependencies": {
-    "@cypress/eslint-plugin-json": "^3.2.3",
-    "eslint": "^8.52.0",
-    "eslint-plugin-chai-friendly": "^0.7.1",
-    "eslint-plugin-cypress": "^2.11.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.0.2"
-  },
+  "description": "Integrate Cypress for testing the GovCMS distribution",
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx,.json,.eslintrc .",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx,.json,.eslintrc .",
     "stop-only": "npx stop-only --skip .cy,node_modules --exclude e2e.coffee"
   },
   "husky": {
@@ -29,14 +14,38 @@
       "pre-commit": "lint-staged"
     }
   },
+  "dependencies": {
+    "cypress": "^13.6.4",
+    "cypress-file-upload": "^5.0.7",
+    "cypress-xpath": "^2.0.1"
+  },
+  "devDependencies": {
+    "@cypress/eslint-plugin-json": "^3.2.3",
+    "cypress-otp": "^1.0.3",
+    "eslint": "^8.56.0",
+    "eslint-plugin-chai-friendly": "^0.7.4",
+    "eslint-plugin-cypress": "^2.15.1",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govcms-tests/tests.git"
+  },
+  "homepage": "https://github.com/govcms-tests/tests#readme",
+  "author": "Joseph Zhao <pandaski@outlook.com.au>",
+  "bugs": {
+    "url": "https://github.com/govcms-tests/tests/issues"
+  },
   "lint-staged": {
     "*.coffee": [
-      "yarn stop-only --folder",
+      "npx stop-only --folder",
       "git add"
     ],
     "*.{js,jsx,ts,tsx,json,eslintrc}": [
-      "yarn stop-only --folder",
-      "yarn eslint --fix",
+      "npx stop-only --folder",
+      "npm run eslint --fix",
       "git add"
     ]
   }

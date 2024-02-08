@@ -11,3 +11,13 @@ node_modules/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# IDEA
+.idea
+
+# Lock files
+composer.lock
+cy/yarn.lock
+
+# Cypress env file
+cy/cypress.env.json

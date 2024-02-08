@@ -24,6 +24,10 @@ commands:
     usage: Stop Docker containers.
     cmd: docker compose stop "$@"
 
+  watch:
+    usage: Use Compose Watch for live development.
+    cmd: docker compose watch
+
   cli:
     usage: Start a shell.
     cmd: docker compose exec govcms bash
@@ -43,3 +47,22 @@ commands:
   drupal-check:
     usage: Static analysis tool to check for correctness and deprecation errors.
     cmd: docker compose exec govcms drupal-check "$@"
+
+  cypress:
+    usage: Run all Cypress tests
+    cmd: |
+      cd cy
+      export CYPRESS_BASE_URL=http://localhost:8888
+      npx cypress run "cypress/e2e/*" --env drupalDrushCmdLine="docker compose exec govcms drush %command"
+
+  cr:
+    usage: Alias for 'cypress'
+    cmd: |
+      ahoy cypress
+
+  co:
+    usage: Open a new Cypress testing window
+    cmd: |
+      cd cy
+      export CYPRESS_BASE_URL=http://localhost:8888
+      npx cypress open --env drupalDrushCmdLine="docker compose exec govcms drush %command"
