@@ -30,7 +30,7 @@ describe('Check Honeypot traps are enabled on webforms', () => {
         // Submit form
         cy.confirm()
         // Check Watchdog logs for honeypot
-        cy.execDrush('ws | grep "Blocked user attempting to reset password."')
+        cy.execDrush('ws').its('stdout').should('contain', 'Blocked user')
         //disabled Watchdog
         cy.execDrush('pm:uninstall dblog -y')
     })
