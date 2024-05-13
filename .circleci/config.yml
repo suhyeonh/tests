@@ -3,7 +3,7 @@ version: '2.1'
 jobs:
   cypress:
     docker:
-      - image: 'govcmstesting/ci:8.2-apache'
+      - image: 'govcmstesting/ci:8.3-apache'
     working_directory: /app
     steps:
       - run:

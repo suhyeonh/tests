@@ -1,11 +1,13 @@
 .DS_Store
 .ahoy.yml
-.lando.yml
+.circleci
 .docker
 .dockerignore
 .git
 .gitignore
 .github
+.idea
+.lando.yml
 *.md
 app
 docs

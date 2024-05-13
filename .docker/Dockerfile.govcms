@@ -2,10 +2,10 @@
 FROM govcms/govcms:10.x-latest as base
 
 # Copy core files and configuration from the "govcms/govcms" image
-COPY --from=drupal:10.1-php8.1-apache /opt/drupal/web/core/install.php /app/web/core/install.php
+COPY --from=drupal:10.2-php8.3-apache /opt/drupal/web/core/install.php /app/web/core/install.php
 
 # Stage 2: Final image
-FROM govcmstesting/ci:8.2-apache
+FROM govcmstesting/ci:8.3-apache
 
 # Copy contents from the "base" stage to "/app/"
 COPY --from=base /app /app
