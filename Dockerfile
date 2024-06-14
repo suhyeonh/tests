@@ -8,7 +8,7 @@ WORKDIR /tests
 COPY composer.json composer.lock ./
 
 # Install PHP dependencies using Composer
-RUN --mount=type=cache,mode=0777,target=/root/.composer/cache composer install --no-scripts --no-autoloader
+RUN --mount=type=cache,mode=0777,target=/root/.cache composer install --no-scripts --no-autoloader
 
 # Copy the rest of the application files
 COPY . .

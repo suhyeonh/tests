@@ -21,3 +21,10 @@ cy/yarn.lock
 
 # Cypress env file
 cy/cypress.env.json
+
+# Exclude everything in the data directory
+/data/*
+!/data/composer/.gitkeep
+!/data/drupal_sites/.gitkeep
+!/data/mariadb_data/.gitkeep
+!/data/registry/config.yml

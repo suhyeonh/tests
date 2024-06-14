@@ -14,6 +14,11 @@ commands:
   build:
     usage: Build project.
     cmd: |
+      docker pull govcms/govcms:10.x-latest
+      docker pull govcmstesting/ci:8.3-apache
+      docker pull mailhog/mailhog:latest
+      docker pull traefik:latest
+      docker pull mariadb:latest
       docker compose build "$@"
 
   restart:
@@ -52,7 +57,7 @@ commands:
     usage: Run all Cypress tests
     cmd: |
       cd cy
-      export CYPRESS_BASE_URL=http://localhost:8888
+      export CYPRESS_BASE_URL=http://govcms.localhost
       npx cypress run "cypress/e2e/*" --env drupalDrushCmdLine="docker compose exec govcms drush %command"
 
   cr:
@@ -64,5 +69,20 @@ commands:
     usage: Open a new Cypress testing window
     cmd: |
       cd cy
-      export CYPRESS_BASE_URL=http://localhost:8888
+      export CYPRESS_BASE_URL=http://govcms.localhost
       npx cypress open --env drupalDrushCmdLine="docker compose exec govcms drush %command"
+
+  start-registry:
+    usage: Start the local Docker registry
+    cmd: |
+      docker compose -f docker-compose.registry.yml up -d
+
+  stop-registry:
+    usage: Stop the local Docker registry
+    cmd: |
+      docker compose -f docker-compose.registry.yml stop
+
+  restart-registry:
+    usage: Restart the local Docker registry
+    cmd: |
+      docker compose -f docker-compose.registry.yml restart

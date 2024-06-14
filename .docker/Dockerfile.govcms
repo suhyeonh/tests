@@ -1,24 +1,22 @@
-# Stage 1: Base image
-FROM govcms/govcms:10.x-latest as base
+# Stage 1: Web image
+FROM govcmstesting/ci:8.3-apache as web
 
-# Copy core files and configuration from the "govcms/govcms" image
-COPY --from=drupal:10.2-php8.3-apache /opt/drupal/web/core/install.php /app/web/core/install.php
+# Install ssmtp and clean up
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ssmtp && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Stage 2: Final image
-FROM govcmstesting/ci:8.3-apache
-
-# Copy contents from the "base" stage to "/app/"
-COPY --from=base /app /app
-
-# Copy test-related files from the  "base" stage to "/app/tests"
-COPY --from=govcms.ops/tests /tests /app/tests
+RUN echo "hostname=govcms.localhost" > /etc/ssmtp/ssmtp.conf && \
+    echo "root=no-reply@govcms.localhost" >> /etc/ssmtp/ssmtp.conf && \
+    echo "mailhub=mailhog:1025" >> /etc/ssmtp/ssmtp.conf && \
+    echo "sendmail_path=/usr/sbin/ssmtp -t" >> /usr/local/etc/php/conf.d/docker-php-sendmail.ini
 
 # Customize Drupal installation
 RUN set -eux; \
     rm -rf /var/www/html; \
-    ln -sf /app/web /var/www/html; \
-    mkdir -p /app/config/default; \
-    chown -R www-data:www-data /app/web/sites;
+    mkdir -p /app/web/sites; \
+    ln -sf /app/web /var/www/html;
 
 # Set environment variables
 ENV SIMPLETEST_BASE_URL="http://localhost"
@@ -26,3 +24,46 @@ ENV SIMPLETEST_DB='mysql://drupal:drupal@mariadb/drupal'
 
 # Set the working directory to "/app/"
 WORKDIR /app/
+
+# Stage 2: Base image
+FROM govcms/govcms:10.x-latest as base
+
+# Copy core files and configuration from the "govcms/govcms" image
+COPY --from=drupal:10.2-php8.3-apache /opt/drupal/web/core/install.php /app/web/core/install.php
+
+# Copy only the necessary files for dependency installation
+COPY composer.json /app/tests/
+
+# Install PHP dependencies using Composer
+RUN --mount=type=cache,mode=0777,target=/root/.cache \
+    cd tests && \
+    composer update --no-scripts --no-autoloader
+
+# Copy test-related files from the  "base" stage to "/app/tests"
+COPY phpcs.xml phpcs.govcms.xml /app/tests/
+
+# Install Composer dependencies, generate autoloader, and run other build tasks
+RUN --mount=type=cache,mode=0777,target=/root/.cache \
+    cd tests && \
+    composer install --no-dev --optimize-autoloader
+
+# Stage 3: Final image
+FROM web
+
+# Customize Drupal installation
+RUN set -eux; \
+    groupadd -r govcms && useradd -r -g govcms -G root,www-data govcms;
+
+# Customize Drupal installation
+RUN set -eux; \
+    mkdir -p /app/config/default; \
+    chown -R govcms:govcms /app/config; \
+    chown -R govcms:govcms /app/web/sites; \
+    mkdir -p /home/govcms; \
+    chown -R govcms:govcms /home/govcms;
+
+# Copy contents from the "base" stage to "/app/"
+COPY --from=base --chown=govcms:govcms /app /app
+
+# Switch to the govcms user
+USER govcms
