@@ -19,8 +19,10 @@ node_modules/
 composer.lock
 cy/yarn.lock
 
-# Cypress env file
+# Cypress file
 cy/cypress.env.json
+cy/cypress/screenshots
+cy/cypress/videos
 
 # Exclude everything in the data directory
 /data/*

@@ -11,6 +11,8 @@
 *.md
 app
 docs
+data
+docker-compose.registry.yml
 docker-compose.yml
 Dockerfile
 Tiltfile

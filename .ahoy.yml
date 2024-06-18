@@ -14,11 +14,6 @@ commands:
   build:
     usage: Build project.
     cmd: |
-      docker pull govcms/govcms:10.x-latest
-      docker pull govcmstesting/ci:8.3-apache
-      docker pull mailhog/mailhog:latest
-      docker pull traefik:latest
-      docker pull mariadb:latest
       docker compose build "$@"
 
   restart:
