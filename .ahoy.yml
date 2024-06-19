@@ -5,6 +5,7 @@ commands:
   up:
     usage: Build project.
     cmd: |
+      ahoy start-services
       docker compose up -d "$@"
 
   down:
@@ -71,23 +72,23 @@ commands:
       export CYPRESS_BASE_URL=http://govcms.localhost
       npx cypress open --env drupalDrushCmdLine="docker compose exec govcms drush %command"
 
-  start-registry:
-    usage: Start the local Docker registry
+  start-services:
+    usage: Start the GovCMS local services
     cmd: |
-      docker compose -f docker-compose.registry.yml up -d
+      docker compose -f docker-compose.services.yml -p govcms-local-services up -d
 
-  stop-registry:
-    usage: Stop the local Docker registry
+  stop-services:
+    usage: Stop the GovCMS local services
     cmd: |
-      docker compose -f docker-compose.registry.yml stop
+      docker compose -f docker-compose.services.yml -p govcms-local-services stop
 
-  restart-registry:
-    usage: Restart the local Docker registry
+  restart-services:
+    usage: Restart the GovCMS local services
     cmd: |
-      docker compose -f docker-compose.registry.yml restart
+      docker compose -f docker-compose.services.yml -p govcms-local-services restart
 
   create-certs:
     usage: Generate SSL certificates for local development
     cmd: |
-      mkcert -cert-file data/certs/local-cert.pem -key-file data/certs/local-key.pem "*.localhost" localhost 127.0.0.1 ::1 "*.govcms.localhost" mailhog.govcms.localhost packeton.govcms.localhost
+      mkcert -cert-file data/certs/local-cert.pem -key-file data/certs/local-key.pem "*.localhost" localhost 127.0.0.1 ::1 "*.govcms.localhost" packeton.govcms.localhost
       echo "Certificates generated in data/certs/ directory"

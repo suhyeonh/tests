@@ -1,0 +1,152 @@
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./data/registry:/var/lib/registry
+      - ./data/registry/config.yml:/etc/docker/registry/config.yml
+
+  ##########################################
+  # traefik: The reverse proxy and load balancer
+  ##########################################
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.http.tls=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./.docker/config/traefik.yaml:/etc/traefik/traefik.yaml
+      - "./data/certs:/certs"
+    networks:
+      - web
+      - internal
+    healthcheck:
+      test: [ "CMD", "traefik", "healthcheck" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ##########################################
+  # mailhog: The mail capture service
+  ##########################################
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    labels:
+      - "traefik.http.routers.mailhog.rule=Host(`mailhog.govcms.localhost`)"
+      - "traefik.http.routers.mailhog-http.entrypoints=web"
+      - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+    networks:
+      - web
+      - internal
+
+  ##########################################
+  # mariadb: The database used by local
+  ##########################################
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-root}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-drupal}
+      MARIADB_USER: ${MARIADB_USER:-drupal}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-drupal}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ##########################################
+  # packeton: The private composer repository
+  ##########################################
+  packeton:
+    build:
+      context: .docker
+      dockerfile: Dockerfile.packeton
+    container_name: packeton
+    environment:
+      APP_SECRET: 'govcms'
+      DATABASE_URL: 'sqlite:////data/app.db'
+      REDIS_URL: 'redis://redis'
+      PUBLIC_ACCESS: 'true'
+    volumes:
+      - ./.docker/config/mirrors.yaml:/var/www/packagist/config/packages/mirrors.yaml
+      - packeton_data:/data
+    labels:
+      - "traefik.enable=true"
+      # HTTP Router
+      - "traefik.http.routers.packeton-http.rule=Host(`packeton.govcms.localhost`)"
+      - "traefik.http.routers.packeton-http.entrypoints=web"
+      # HTTPS Router
+      - "traefik.http.routers.packeton-https.rule=Host(`packeton.govcms.localhost`)"
+      - "traefik.http.routers.packeton-https.entrypoints=websecure"
+      - "traefik.http.routers.packeton-https.tls=true"
+      - "traefik.http.routers.packeton-https.tls.certresolver=myresolver"
+    networks:
+      - web
+      - internal
+    depends_on:
+      - redis
+      - traefik
+
+  ##########################################
+  # redis: Redis server for Packeton
+  ##########################################
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  registry:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/registry
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/mariadb_data
+  packeton_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/packeton
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/redis_data
+
+networks:
+  web:
+  internal:

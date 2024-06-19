@@ -12,7 +12,7 @@
 app
 docs
 data
-docker-compose.registry.yml
+docker-compose.services.yml
 docker-compose.yml
 Dockerfile
 Tiltfile
