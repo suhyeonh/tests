@@ -17,6 +17,7 @@ services:
       - cy:/app/tests/cy
       - phpunit:/app/tests/phpunit
       - composer_cache:/home/govcms/.cache
+      - ./.docker/config/rector.php:/app/rector.php
     environment:
       - GOVCMS_ENV=development
     labels:
@@ -122,12 +123,14 @@ services:
       - packeton_data:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.packeton.rule=Host(`packeton.govcms.localhost`)"
-      - "traefik.http.routers.packeton.entrypoints=websecure"
-      - "traefik.http.routers.packeton.tls=true"
-      - "traefik.http.routers.packeton.tls.certresolver=myresolver"
-      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.packeton.middlewares=https-redirect"
+      # HTTP Router
+      - "traefik.http.routers.packeton-http.rule=Host(`packeton.govcms.localhost`)"
+      - "traefik.http.routers.packeton-http.entrypoints=web"
+      # HTTPS Router
+      - "traefik.http.routers.packeton-https.rule=Host(`packeton.govcms.localhost`)"
+      - "traefik.http.routers.packeton-https.entrypoints=websecure"
+      - "traefik.http.routers.packeton-https.tls=true"
+      - "traefik.http.routers.packeton-https.tls.certresolver=myresolver"
     networks:
       - web
       - internal
