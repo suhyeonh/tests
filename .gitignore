@@ -26,7 +26,9 @@ cy/cypress/videos
 
 # Exclude everything in the data directory
 /data/*
+!/data/certs/.gitkeep
 !/data/composer/.gitkeep
 !/data/drupal_sites/.gitkeep
+!/data/letsencrypt/.gitkeep
 !/data/mariadb_data/.gitkeep
 !/data/registry/config.yml

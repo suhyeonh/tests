@@ -81,3 +81,9 @@ commands:
     usage: Restart the local Docker registry
     cmd: |
       docker compose -f docker-compose.registry.yml restart
+
+  create-certs:
+    usage: Generate SSL certificates for local development
+    cmd: |
+      mkcert -cert-file data/certs/local-cert.pem -key-file data/certs/local-key.pem "*.localhost" localhost 127.0.0.1 ::1 "*.govcms.localhost" mailhog.govcms.localhost packeton.govcms.localhost
+      echo "Certificates generated in data/certs/ directory"

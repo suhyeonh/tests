@@ -7,13 +7,11 @@ services:
     volumes:
       - ./data/registry:/var/lib/registry
       - ./data/registry/config.yml:/etc/docker/registry/config.yml
-    networks:
-      - web
-      - internal
-
-networks:
-  web:
-  internal:
 
 volumes:
   registry:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/registry

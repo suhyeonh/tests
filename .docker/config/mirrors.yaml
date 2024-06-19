@@ -1,0 +1,11 @@
+packeton:
+  anonymous_access: true
+  anonymous_archive_access: true
+  mirrors:
+   packagist:
+     url: https://repo.packagist.org
+     public_access: true
+   drupal:
+     url: https://packages.drupal.org/8
+     public_access: true
+     sync_lazy: true

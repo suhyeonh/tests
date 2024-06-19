@@ -50,15 +50,25 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.http.tls=true"
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./.docker/config/traefik.yaml:/etc/traefik/traefik.yaml
+      - "./data/certs:/certs"
     networks:
       - web
       - internal
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   ##########################################
   # mariadb: The database used by local
@@ -93,6 +103,53 @@ services:
     networks:
       - web
       - internal
+
+  ##########################################
+  # packeton: The private composer repository
+  ##########################################
+  packeton:
+    build:
+      context: .docker
+      dockerfile: Dockerfile.packeton
+    container_name: packeton
+    environment:
+      APP_SECRET: 'govcms'
+      DATABASE_URL: 'sqlite:////data/app.db'
+      REDIS_URL: 'redis://redis'
+      PUBLIC_ACCESS: 'true'
+    volumes:
+      - ./.docker/config/mirrors.yaml:/var/www/packagist/config/packages/mirrors.yaml
+      - packeton_data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.packeton.rule=Host(`packeton.govcms.localhost`)"
+      - "traefik.http.routers.packeton.entrypoints=websecure"
+      - "traefik.http.routers.packeton.tls=true"
+      - "traefik.http.routers.packeton.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.packeton.middlewares=https-redirect"
+    networks:
+      - web
+      - internal
+    depends_on:
+      - redis
+      - traefik
+
+  ##########################################
+  # redis: Redis server for Packeton
+  ##########################################
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   modules:
@@ -143,6 +200,18 @@ volumes:
       type: none
       o: bind
       device: ./data/mariadb_data
+  packeton_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/packeton
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/redis_data
 
 networks:
   web:
