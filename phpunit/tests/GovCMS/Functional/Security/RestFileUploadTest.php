@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\govcms_security\Functional;
+namespace GovCMS\Tests\Functional\Security;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -131,6 +131,7 @@ class RestFileUploadTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 
@@ -237,6 +238,7 @@ class RestFileUploadTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function getExpectedUnauthorizedAccessMessage($method) {
     return "The following permissions are required: 'administer entity_test content' OR 'administer entity_test_with_bundle content' OR 'create entity_test entity_test_with_bundle entities'.";
   }
@@ -274,6 +276,7 @@ class RestFileUploadTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function assertNormalizationEdgeCases($method, Url $url, array $request_options) {
     // The file upload resource only accepts binary data, so there are no
     // normalization edge cases to test, as there are no normalized entity
@@ -392,9 +395,7 @@ class RestFileUploadTest extends ResourceTestBase {
       // Set the required Content-Disposition header for the file name.
       'Content-Disposition' => 'file; filename="example.txt"',
     ];
-    $request_options[RequestOptions::HEADERS] = array_filter($headers, function ($value) {
-      return $value !== FALSE;
-    });
+    $request_options[RequestOptions::HEADERS] = array_filter($headers, fn($value) => $value !== FALSE);
     $request_options[RequestOptions::BODY] = $file_contents;
     $request_options = NestedArray::mergeDeep($request_options, $this->getAuthenticationRequestOptions('POST'));
 
@@ -404,6 +405,7 @@ class RestFileUploadTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUpAuthorization($method) {
     switch ($method) {
       case 'GET':
@@ -437,6 +439,7 @@ class RestFileUploadTest extends ResourceTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function getExpectedUnauthorizedAccessCacheability() {
     // There is cacheability metadata to check as file uploads only allows POST
     // requests, which will not return cacheable responses.

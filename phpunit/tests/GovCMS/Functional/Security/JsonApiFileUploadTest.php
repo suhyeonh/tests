@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\govcms_security\Functional;
+namespace GovCMS\Tests\Functional\Security;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
@@ -129,6 +129,7 @@ class JsonApiFileUploadTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 
@@ -249,9 +250,7 @@ class JsonApiFileUploadTest extends BrowserTestBase {
       // Set the required JSON:API Accept header.
       'Accept' => 'application/vnd.api+json',
     ];
-    $request_options[RequestOptions::HEADERS] = array_filter($headers, function ($value) {
-      return $value !== FALSE;
-    });
+    $request_options[RequestOptions::HEADERS] = array_filter($headers, fn($value) => $value !== FALSE);
     $request_options[RequestOptions::BODY] = $file_contents;
     $request_options = NestedArray::mergeDeep($request_options, $this->getAuthenticationRequestOptions());
 

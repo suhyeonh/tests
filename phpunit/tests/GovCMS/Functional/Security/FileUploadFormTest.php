@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\govcms_security\Functional;
+namespace GovCMS\Tests\Functional\Security;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\govcms_security\GovcmsFileConstraintInterface;
@@ -35,6 +35,7 @@ class FileUploadFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
     $account = $this->drupalCreateUser([]);
@@ -49,6 +50,7 @@ class FileUploadFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function tearDown(): void {
     // Delete all test files.
     foreach ($this->testFiles as $file) {
@@ -77,7 +79,7 @@ class FileUploadFormTest extends BrowserTestBase {
       $this->drupalGet('govcms-file-test/save_upload_from_form_test');
       $this->submitForm($edit, 'Submit');
       $this->assertSession()->statusCodeEquals(403);
-      $this->assertFileDoesNotExist('temporary://' . basename($file));
+      $this->assertFileDoesNotExist('temporary://' . basename((string) $file));
     }
 
     // Test multiple file uploading for all blocked file extensions.
@@ -97,7 +99,7 @@ class FileUploadFormTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(403);
     // Check the temporary folder to make sure no blocked file was uploaded.
     foreach ($this->testFiles as $file) {
-      $this->assertFileDoesNotExist('temporary://' . basename($file));
+      $this->assertFileDoesNotExist('temporary://' . basename((string) $file));
     }
 
     // Test Ajax file uploading via a form.
@@ -112,7 +114,7 @@ class FileUploadFormTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(403);
     // Check the temporary folder to make sure no blocked file was uploaded.
     foreach ($this->testFiles as $file) {
-      $this->assertFileDoesNotExist('temporary://' . basename($file));
+      $this->assertFileDoesNotExist('temporary://' . basename((string) $file));
     }
 
     // Test an image file to make sure non-blocked file still can be uploaded.
