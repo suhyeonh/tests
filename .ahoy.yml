@@ -42,7 +42,11 @@ commands:
 
   phpunit:
     usage: Run PHPUnit tests.
-    cmd: docker compose exec govcms phpunit "$@"
+    cmd: docker compose exec govcms phpunit -c web/core "$@"
+
+  phpunit-govcms:
+    usage: Run PHPUnit tests.
+    cmd: docker compose exec govcms phpunit -c web/core tests/phpunit/tests/GovCMS --testdox
 
   drupal-check:
     usage: Static analysis tool to check for correctness and deprecation errors.
