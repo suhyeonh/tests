@@ -1,8 +1,7 @@
+# Exclude everything except what is necessary for the build
 .DS_Store
 .ahoy.yml
 .circleci
-.docker
-.dockerignore
 .git
 .gitignore
 .github
@@ -14,7 +13,11 @@ docs
 data
 docker-compose.services.yml
 docker-compose.yml
-Dockerfile
 Tiltfile
 LICENSE
 vendor
+
+# Include necessary files and directories
+!.docker/
+!.docker/**
+!composer.json

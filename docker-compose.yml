@@ -8,13 +8,20 @@ services:
       dockerfile: .docker/Dockerfile.govcms
     container_name: govcms
     volumes:
+      # Source code volumes
       - modules:/app/web/modules/develop
       - themes:/app/web/themes/develop
       - /var/www/html
+
+      # Test volumes
       - behat:/app/tests/behat
       - cy:/app/tests/cy
       - phpunit:/app/tests/phpunit
+
+      # Composer cache volume
       - composer_cache:/home/govcms/.cache
+
+      # Configuration files
       - ./.docker/config/rector.php:/app/rector.php
     environment:
       - GOVCMS_ENV=development
