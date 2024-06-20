@@ -15,18 +15,18 @@
     }
   },
   "dependencies": {
-    "cypress": "^13.6.4",
+    "cypress": "^13.12.0",
     "cypress-file-upload": "^5.0.7",
     "cypress-xpath": "^2.0.1"
   },
   "devDependencies": {
     "@cypress/eslint-plugin-json": "^3.2.3",
     "cypress-otp": "^1.0.3",
-    "eslint": "^8.56.0",
-    "eslint-plugin-chai-friendly": "^0.7.4",
-    "eslint-plugin-cypress": "^2.15.1",
-    "husky": "^9.0.10",
-    "lint-staged": "^15.2.2"
+    "eslint": "^9.5.0",
+    "eslint-plugin-chai-friendly": "^1.0.0",
+    "eslint-plugin-cypress": "^3.3.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7"
   },
   "license": "MIT",
   "repository": {
