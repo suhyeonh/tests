@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "cypress",
-    "@cypress/json"
+    "cypress"
   ],
   "extends": [
     "plugin:chai-friendly/recommended",
