@@ -3,7 +3,7 @@ FROM govcmstesting/ci:8.3-apache as web
 
 # Install ssmtp and clean up
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ssmtp jq nano && \
+    apt-get install -y --no-install-recommends ssmtp nano && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
