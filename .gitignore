@@ -1,5 +1,5 @@
 # Local development
-app/
+!/app/.gitkeep
 
 # Composer vendor
 vendor/
