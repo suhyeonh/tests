@@ -32,3 +32,5 @@ cy/cypress/videos
 !/data/letsencrypt/.gitkeep
 !/data/mariadb_data/.gitkeep
 !/data/registry/config.yml
+!/data/packeton/.gitkeep
+!/data/redis_data/.gitkeep
