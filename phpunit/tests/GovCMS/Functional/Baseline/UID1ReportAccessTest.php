@@ -28,8 +28,20 @@ class UID1ReportAccessTest extends BrowserTestBase {
         // Log out the current user to ensure a clean state.
         $this->drupalLogout();
 
-        // Log in as the user with UID 1.
-        $this->drupalLogin(\Drupal\user\Entity\User::load(1));
+        // Load the real user object from UserSession object.
+        $admin_account = User::load($this->rootUser->id());
+        // The password is empty.
+        $this->assertFalse($admin_account->passRaw);
+        // Set the password and save the User.
+        $new_password = $this->randomString();
+        $admin_account->setPassword($new_password);
+        $admin_account->save();
+        // Set the passRaw directly on the User.
+        $admin_account->passRaw = $new_password;
+        $this->drupalLogin($admin_account);
+
+        // Ensure the current user is the root user.
+        $this->assertEquals(1, \Drupal::currentUser()->id());
 
         // Check that UID 1 can access the GovCMS system report page.
         $this->drupalGet('admin/reports/system-report');
