@@ -2,6 +2,8 @@
 
 This README provides an overview of the local services configured for GovCMS local development and testing. The services included in this setup are designed to facilitate a comprehensive and efficient development environment.
 
+All of them are preconfigured and no need special configurations for normal usage.
+
 ## Services Overview
 
 ### Docker Registry
