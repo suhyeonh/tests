@@ -3,6 +3,7 @@
 namespace GovCMS\Tests\Functional\Baseline;
 
 use Drupal\Tests\BrowserTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Tests UID 1 access to the GovCMS system and Drupal status reports.
@@ -30,8 +31,8 @@ class UID1ReportAccessTest extends BrowserTestBase {
 
         // Load the real user object from UserSession object.
         $admin_account = User::load($this->rootUser->id());
-        // The password is empty.
-        $this->assertFalse($admin_account->passRaw);
+        // Check if the password is null.
+        $this->assertNull($admin_account->passRaw);
         // Set the password and save the User.
         $new_password = $this->randomString();
         $admin_account->setPassword($new_password);
