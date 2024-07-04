@@ -1,5 +1,5 @@
 # Stage 1: Web image
-FROM govcmstesting/ci:8.3-apache as web
+FROM govcmstesting/ci:8.3-apache AS web
 
 # Install ssmtp and clean up
 RUN apt-get update && \
@@ -27,7 +27,7 @@ ENV SIMPLETEST_DB='sqlite://sites/default/files/.ht.sqlite'
 WORKDIR /app/
 
 # Stage 2: Base image
-FROM govcms/govcms:10.x-latest as base
+FROM govcms/govcms:10.x-edge AS base
 
 # Copy core files and configuration from the "govcms/govcms" image
 COPY --from=drupal:10.2-php8.3-apache /opt/drupal/web/core/install.php /app/web/core/install.php
