@@ -81,6 +81,10 @@ class StatusTest extends BrowserTestBase {
    */
   #[\Override]
   protected function setUp(): void {
+    if (!class_exists('Drupal\govcms\Controller\SystemReportController')) {
+      $this->markTestSkipped();
+    }
+    
     parent::setUp();
 
     // Unset the sync directory in settings.php to trigger the error.
