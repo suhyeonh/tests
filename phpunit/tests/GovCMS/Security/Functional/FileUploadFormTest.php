@@ -1,6 +1,6 @@
 <?php
 
-namespace GovCMS\Tests\Functional\Security;
+namespace GovCMS\Tests\Security\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\govcms_security\GovcmsFileConstraintInterface;

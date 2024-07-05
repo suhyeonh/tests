@@ -1,13 +1,16 @@
 <?php
 
-namespace GovCMS\Tests\Functional\Security;
+namespace GovCMS\Tests\Modules\Minisite\Functional;
 
-use Drupal\Tests\honeypot\Functional\HoneypotAdminFormTest;
+use Drupal\Tests\minisite\Functional\MinisiteTest as BaseMinisiteTest;
 
 /**
- * Test class for Honeypot functionality with GovCMS profile.
+ * Test class for Minisite functionality with GovCMS profile.
+ *
+ * @group govcms
+ * @group minisite
  */
-class HoneypotAdminTest extends HoneypotAdminFormTest {
+class MinisiteTest extends BaseMinisiteTest {
 
   /**
    * The installation profile to use with this test.

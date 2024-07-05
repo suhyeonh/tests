@@ -1,8 +1,8 @@
 <?php
 
-namespace GovCMS\Tests\Functional\Modules\Minisite;
+namespace GovCMS\Tests\Modules\Minisite\Functional;
 
-use Drupal\Tests\minisite\Functional\MinisiteTest as BaseMinisiteTest;
+use Drupal\Tests\minisite\Functional\FieldValidationTest as BaseFieldValidationTest;
 
 /**
  * Test class for Minisite functionality with GovCMS profile.
@@ -10,7 +10,7 @@ use Drupal\Tests\minisite\Functional\MinisiteTest as BaseMinisiteTest;
  * @group govcms
  * @group minisite
  */
-class MinisiteTest extends BaseMinisiteTest {
+class MinisiteFieldValidationTest extends BaseFieldValidationTest {
 
   /**
    * The installation profile to use with this test.

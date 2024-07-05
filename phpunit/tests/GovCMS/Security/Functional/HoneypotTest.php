@@ -1,6 +1,6 @@
 <?php
 
-namespace GovCMS\Tests\Functional\Security;
+namespace GovCMS\Tests\Security\Functional;
 
 use Drupal\Tests\honeypot\Functional\HoneypotFormTest;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace GovCMS\Tests\Functional\Security;
+namespace GovCMS\Tests\Security\Functional;
 
 /**
  * Provides methods to create test files from given values.
