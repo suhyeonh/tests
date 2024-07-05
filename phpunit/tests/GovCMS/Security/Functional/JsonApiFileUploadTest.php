@@ -305,7 +305,7 @@ class JsonApiFileUploadTest extends BrowserTestBase {
           'status' => $expected_status,
           'uri' => [
             'value' => 'public://foobar/' . $expected_filename,
-            'url' => JsonApiFileUploadTest . phpbase_path() . $this->siteDirectory . '/files/foobar/' . rawurlencode($expected_filename),
+            'url' => base_path() . $this->siteDirectory . '/files/foobar/' . rawurlencode($expected_filename),
           ],
           'drupal_internal__fid' => (int) $file->id(),
         ],

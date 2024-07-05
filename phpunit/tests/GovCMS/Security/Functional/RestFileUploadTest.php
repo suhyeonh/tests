@@ -332,7 +332,7 @@ class RestFileUploadTest extends ResourceTestBase {
       'uri' => [
         [
           'value' => 'public://foobar/' . $expected_filename,
-          'url' => RestFileUploadTest . phpbase_path() . $this->siteDirectory . '/files/foobar/' . rawurlencode($expected_filename),
+          'url' => base_path() . $this->siteDirectory . '/files/foobar/' . rawurlencode($expected_filename),
         ],
       ],
       'filemime' => [
