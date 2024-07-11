@@ -1,6 +1,8 @@
 <?php
 
-namespace GovCMS\Tests;
+declare(strict_types=1);
+
+namespace GovCMS\Tests\Baseline\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 
@@ -18,4 +20,10 @@ abstract class GovCMSTestBase extends BrowserTestBase {
    */
   protected $profile = 'govcms';
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+      parent::setUp();
+  }
 }
