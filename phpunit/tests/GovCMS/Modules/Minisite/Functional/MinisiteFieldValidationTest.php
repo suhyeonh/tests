@@ -25,17 +25,6 @@ class MinisiteFieldValidationTest extends BaseFieldValidationTest {
   #[\Override]
   protected function setUp(): void {
     parent::setUp();
-
-    // Get the module handler.
-    $module_handler = \Drupal::service('module_handler');
-    // Get the version of the minisite module.
-    $module_info = $module_handler->getModule('minisite');
-    $version = $module_info->info['version'] ?? '0.0.0';
-
-    // Check if the version is less than 2.2.0.
-    if (version_compare($version, '2.2.0', '<')) {
-      $this->markTestSkipped('Minisite module version is less than 2.2.0.');
-    }
   }
 
 }

@@ -27,7 +27,7 @@ ENV SIMPLETEST_DB='sqlite://sites/default/files/.ht.sqlite'
 WORKDIR /app/
 
 # Stage 2: Base image
-FROM govcms/govcms:10.x-edge AS base
+FROM govcms/govcms:10.x-beta AS base
 
 # Copy core files and configuration from the "govcms/govcms" image
 COPY --from=drupal:10.2-php8.3-apache /opt/drupal/web/core/install.php /app/web/core/install.php
