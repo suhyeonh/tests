@@ -1,0 +1,45 @@
+# Set the PHP and GovCMS versions as arguments
+ARG PHP_VERSION=8.3
+ARG GOVCMS_VERSION=10.x-latest
+
+# Use multi-stage builds for better optimization
+FROM govcmstesting/tests:latest-php${PHP_VERSION} AS tests
+FROM govcms/govcms:${GOVCMS_VERSION} AS govcms
+FROM govcmstesting/php:${PHP_VERSION}-apache
+
+# Set the working directory to "/app/"
+WORKDIR /app/
+
+# Set environment variables
+ENV PATH="${PATH}:/app/tests/vendor/bin:/app/vendor/bin:/app/bin" \
+    SIMPLETEST_BASE_URL="http://localhost" \
+    SIMPLETEST_DB="sqlite://sites/default/files/.ht.sqlite"
+
+# Create govcms user and set permissions, configure Apache
+RUN set -eux; \
+    groupadd -r govcms && useradd -r -g govcms -G root,www-data govcms; \
+    mkdir -p /home/govcms/.cache/composer && chown -R govcms:govcms /home/govcms;
+
+# Copy govcms and test files with correct ownership
+COPY --chown=govcms:govcms --from=govcms /app /app
+COPY --chown=govcms:govcms --from=tests /tests /app/tests
+
+# Configure Apache for Drupal
+RUN set -eux; \
+    echo '<VirtualHost *:80>' > /etc/apache2/sites-available/000-default.conf; \
+    echo '    ServerAdmin webmaster@localhost' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    DocumentRoot /app/web' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    <Directory /app/web>' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '        Options Indexes FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '        AllowOverride All' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '        Require all granted' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf; \
+    echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+
+# Switch to govcms user
+USER govcms
+
+# Default command (can be overridden by docker-compose)
+CMD ["apache2-foreground"]
