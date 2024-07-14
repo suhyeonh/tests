@@ -8,6 +8,7 @@
 !phpunit/
 !phpcs.govcms.xml
 !phpcs.xml
+!.docker
 
 # Exclude specific unnecessary files within included directories
 tests/cy/cypress/screenshots
