@@ -1,0 +1,28 @@
+name: GovCMS CI Tests - PHPUnit
+
+on:
+  push:
+    branches: [ "3.x-develop" ]
+  pull_request:
+    branches: [ "3.x-develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    services:
+      web:
+        image: govcmstesting/ci:latest-php8.3-apache
+        ports:
+          - 80:80
+        volumes:
+          - .:/app/tests
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run PHPUnit tests
+        run: |
+           docker exec ${{ job.services.web.id }} govcms-phpunit --testdox --testsuite govcms-integration
