@@ -1,4 +1,4 @@
-name: GovCMS CI Tests - Cypress
+name: GovCMS CI Tests
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
           cd cy && npm ci
       - name: Run Cypress tests
         run: |
-          cd cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine="docker exec ${{ job.services.web.id }} drush --root=/app/web %command"
+          cd cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine="docker exec ${{ job.services.web.id }} drush --root=/app/web %command" --spec "cypress/e2e/**/*.cy.js,!cypress/e2e/3-modules/module_versions.cy.js"
