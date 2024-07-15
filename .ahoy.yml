@@ -69,6 +69,11 @@ commands:
       docker compose exec govcms composer dump-autoload
       docker compose exec govcms phpunit -c web/core tests/phpunit/tests/GovCMS/Modules --testdox
 
+  phpunit-govcms-phpunit:
+    usage: Run PHPUnit tests using the govcms-phpunit command.
+    cmd: |
+      docker compose exec govcms govcms-phpunit --testdox --testsuite govcms-integration
+
   drupal-check:
     usage: Static analysis tool to check for correctness and deprecation errors.
     cmd: docker compose exec govcms drupal-check "$@"

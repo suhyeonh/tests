@@ -2,9 +2,9 @@
 
 /**
  * @file
- * Autoloader for Drupal PHPUnit testing.
+ * Autoloader for GovCMS Drupal PHPUnit testing.
  *
- * @see phpunit.xml.dist
+ * @see phpunit.xml
  */
 
 use Drupal\TestTools\PhpUnitCompatibility\ClassWriter;
@@ -119,8 +119,8 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
  * Populate class loader with additional namespaces for tests.
  *
  * We run this in a function to avoid setting the class loader to a global
- * that can change. This change can cause unpredictable false positives for
- * phpunit's global state change watcher. The class loader can be retrieved from
+ * that can change. This change can cause unpredictable false positives for the
+ * PHPUnit global state change watcher. The class loader can be retrieved from
  * composer at any time by requiring autoload.php.
  */
 function drupal_phpunit_populate_class_loader() {
@@ -136,6 +136,7 @@ function drupal_phpunit_populate_class_loader() {
   $loader->add('Drupal\\FunctionalTests', '/app/web/core/tests');
   $loader->add('Drupal\\FunctionalJavascriptTests', '/app/web/core/tests');
   $loader->add('Drupal\\TestTools', '/app/web/core/tests');
+  $loader->add('GovCMS\\Tests', '/app/tests/phpunit/tests');
 
   if (!isset($GLOBALS['namespaces'])) {
     // Scan for arbitrary extension namespaces from core and contrib.
@@ -174,14 +175,13 @@ mb_language('uni');
 // reduce the fragility of the testing system in general.
 date_default_timezone_set('Australia/Sydney');
 
-// Runtime assertions. PHPUnit follows the php.ini assert.active setting for
-// runtime assertions. By default this setting is on. Ensure exceptions are
-// thrown if an assert fails.
-assert_options(ASSERT_EXCEPTION, TRUE);
-
 // Ensure ignored deprecation patterns listed in .deprecation-ignore.txt are
 // considered in testing.
 if (getenv('SYMFONY_DEPRECATIONS_HELPER') === FALSE) {
   $deprecation_ignore_filename = realpath("/app/web/core/.deprecation-ignore.txt");
   putenv("SYMFONY_DEPRECATIONS_HELPER=ignoreFile=$deprecation_ignore_filename");
 }
+
+// Drupal expects to be run from its root directory. This ensures all test types
+// are consistent.
+chdir('/app/web');
