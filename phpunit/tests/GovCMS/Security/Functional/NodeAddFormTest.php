@@ -6,9 +6,16 @@ namespace GovCMS\Tests\Security\Functional;
 
 use GovCMS\Tests\Baseline\Functional\GovCMSTestBase;
 
+/**
+ * Test GovCMS's custom requirement that node authoring details are not shown
+ * by default.
+ *
+ * @covers govcms_security_form_alter()
+ *
+ * @group govcms
+ * @group node
+ */
 class NodeAddFormTest extends GovCMSTestBase {
-
-    protected static $modules = ['user', 'node', 'govcms_security'];
 
     protected function setUp(): void {
         parent::setUp();
@@ -19,7 +26,6 @@ class NodeAddFormTest extends GovCMSTestBase {
             'bypass node access',
         ]);
         $this->drupalLogin($user);
-
     }
 
     public function testAuthorInfoHidden(): void {
