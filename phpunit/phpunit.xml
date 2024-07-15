@@ -36,11 +36,10 @@
       <directory>/app/web/themes</directory>
     </testsuite>
     <testsuite name="govcms-integration">
-      <directory>/app/tests/phpunit/tests/GovCMS</directory>
+      <directory>/app/tests/phpunit/integration</directory>
     </testsuite>
     <testsuite name="govcms">
       <directory>/app/tests/phpunit/tests</directory>
-      <exclude>/app/tests/phpunit/tests/GovCMS</exclude>
     </testsuite>
   </testsuites>
   <listeners>
