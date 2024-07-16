@@ -1,0 +1,34 @@
+name: GovCMS CI Tests - Cypress
+
+on:
+  push:
+    branches: [ "3.x-develop" ]
+  pull_request:
+    branches: [ "3.x-develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+
+    services:
+      web:
+        image: govcmstesting/ci:latest-php8.3-apache
+        ports:
+          - 80:80
+        volumes:
+          - .:/app/tests
+
+    steps:
+      - name: Install GovCMS site
+        run: |
+          docker exec ${{ job.services.web.id }} drush site-install -y govcms --db-url=sqlite://sites/default/files/.ht.sqlite --site-name='GovCMS' --account-pass=password install_configure_form.enable_update_status_emails=NULL install_configure_form.enable_update_status_module=NULL || true
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          cd cy && npm ci
+      - name: Run Cypress tests
+        run: |
+          cd cy && npx cypress run --config baseUrl=http://localhost --env drupalDrushCmdLine="docker exec ${{ job.services.web.id }} drush --root=/app/web %command" --spec "cypress/e2e/**/*.cy.js,!cypress/e2e/3-modules/module_versions.cy.js"

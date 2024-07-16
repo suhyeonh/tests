@@ -136,7 +136,13 @@ function drupal_phpunit_populate_class_loader() {
   $loader->add('Drupal\\FunctionalTests', '/app/web/core/tests');
   $loader->add('Drupal\\FunctionalJavascriptTests', '/app/web/core/tests');
   $loader->add('Drupal\\TestTools', '/app/web/core/tests');
-  $loader->add('GovCMS\\Tests', '/app/tests/phpunit/tests');
+
+  // Add multiple paths for GovCMS\Tests
+  $loader->addPsr4('GovCMS\\Tests\\', [
+    '/app/tests/phpunit/tests',
+    '/app/tests/phpunit/integration',
+    '/app/tests/phpunit/integration/GovCMS'
+  ]);
 
   if (!isset($GLOBALS['namespaces'])) {
     // Scan for arbitrary extension namespaces from core and contrib.

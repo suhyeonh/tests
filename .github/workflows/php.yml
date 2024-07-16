@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Builder - PHP Composer
 
 on:
   push:
