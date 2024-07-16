@@ -18,7 +18,9 @@ ENV PATH="${PATH}:/app/tests/vendor/bin:/app/vendor/bin:/app/bin" \
 # Create govcms user and set permissions, configure Apache
 RUN set -eux; \
     groupadd -r govcms && useradd -r -g govcms -G root,www-data govcms; \
-    mkdir -p /home/govcms/.cache/composer && chown -R govcms:govcms /home/govcms;
+    mkdir -p /app/config/default && chown -R govcms:govcms /app; \
+    mkdir -p /home/govcms/.cache/composer && chown -R govcms:govcms /home/govcms; \
+    echo 'govcms ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Copy govcms and test files with correct ownership
 COPY --chown=govcms:govcms --from=govcms /app /app
