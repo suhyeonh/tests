@@ -27,6 +27,8 @@ jobs:
         run: |
            docker exec ${{ job.services.web.id }} govcms-phpunit --testdox --testsuite govcms-integration
   generate-docs:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
