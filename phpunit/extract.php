@@ -107,6 +107,7 @@ function clean_phpdoc(string $docstring): string {
 
 // Usage example:
 $docs = get_docs_in_directory($argv[1]);
+echo getcwd();
 print_r($docs);
 $csv_string = convert_doc_array_to_csv($docs);
 echo $csv_string;
