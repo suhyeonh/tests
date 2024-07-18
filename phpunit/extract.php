@@ -133,7 +133,7 @@ function convert_test_array(string $test_name, array $test_array): string {
 
 function create_csv_file(string $csv_string): void {
     $rows = explode(PHP_EOL, $csv_string);
-    $filename = 'docs/out.csv';
+    $filename = 'phpunit/docs/testcases.csv';
     $fd = fopen($filename, 'w');
     if ($fd === false) {
         die();
