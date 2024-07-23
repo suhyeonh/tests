@@ -44,10 +44,10 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          mkdir -p ${{ github.workspace }}/phpunit/docs
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          cd phpunit/docs
-          git add .
+          git add ${{ github.workspace }}/phpunit/docs/
           git commit -m "Update generated docs"
           git push
         env:
