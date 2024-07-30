@@ -1,6 +1,6 @@
 <?php
 
-namespace GovCMS\Tests\Integration\GovCMS\Modules\Events_log_track\Functional;
+namespace GovCMS\Tests\Integration\GovCMS\Modules\events_log_track\Functional;
 
 use Drupal\Tests\event_log_track\Functional\EventsLogTrackTestBase as BaseEventsLogTrackTest;
 
@@ -10,21 +10,15 @@ use Drupal\Tests\event_log_track\Functional\EventsLogTrackTestBase as BaseEvents
  * @group govcms
  * @group eventlogtrack
  */
-class EventLogTrackTest extends BaseEventsLogTrackTest {
+class EventsLogTrackTestBase extends BaseEventsLogTrackTest {
 
-  /**
-   * The installation profile to use with this test.
-   *
-   * @var string
-   */
-  protected $profile = 'govcms';
+    // Use the GovCMS profile
+    protected $profile = 'govcms';
 
-  /**
-   * Overrides setUp to ensure GovCMS profile is used.
-   */
-  #[\Override]
-  protected function setUp(): void {
-    parent::setUp();
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void {
+        parent::setUp();
+    }
 }
