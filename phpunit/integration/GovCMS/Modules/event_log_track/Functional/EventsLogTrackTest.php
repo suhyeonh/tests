@@ -2,7 +2,7 @@
 
 namespace GovCMS\Tests\Integration\GovCMS\Modules\event_log_track\Functional;
 
-use Drupal\Tests\event_log_track\Functional\EventsLogTrackTestBase as BaseEventsLogTrackTest;
+use Drupal\Tests\event_log_track\Functional\EventsLogConfigChangeTest as BaseEventsLogTrackTest;
 
 /**
  * Test class for Event log track test functionality with GovCMS profile.
@@ -10,7 +10,7 @@ use Drupal\Tests\event_log_track\Functional\EventsLogTrackTestBase as BaseEvents
  * @group govcms
  * @group eventlogtrack
  */
-class EventsLogTrackTestBase extends BaseEventsLogTrackTest {
+class EventsLogConfigChangeTest extends BaseEventsLogTrackTest {
 
     // Use the GovCMS profile
     protected $profile = 'govcms';
