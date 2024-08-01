@@ -14,11 +14,4 @@ class EventsLogConfigChangeTest extends BaseEventsLogTrackTest {
 
     // Use the GovCMS profile
     protected $profile = 'govcms';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void {
-        parent::setUp();
-    }
 }
