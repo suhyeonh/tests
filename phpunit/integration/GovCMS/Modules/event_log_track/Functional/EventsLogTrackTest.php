@@ -8,9 +8,9 @@ use Drupal\Tests\event_log_track\Functional\EventsLogConfigChangeTest;
  * Test class for Event log track test functionality with GovCMS profile.
  *
  * @group govcms
- * @group eventlogtrack
+ * 
  */
-class BaseEventsLogTrackTest{
+class BaseEventsLogTrackTest extends EventsLogConfigChangeTest {
 
     // Use the GovCMS profile
     protected $profile = 'govcms';
